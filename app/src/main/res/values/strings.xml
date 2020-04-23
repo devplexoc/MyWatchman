@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">My Watchman</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="address">A-101, Himani Complex, near Ahmedabad 15 restaruant, Vastarpur,Ahmedabad,380052.</string>
+    <string name="location_permission_msg">Location Permission is required.Please grant permission from setting.</string>
+
+    <string-array name="planduration">
+        <item>1 Month</item>
+        <item>6 Month</item>
+        <item>12 Month</item>
+    </string-array>
+
+    <string-array name="sostype">
+        <item>---Select SOS Type---</item>
+        <item>Medical</item>
+        <item>Accidetal</item>
+        <item>Business</item>
+        <item>Defense</item>
+        <item>Transportation</item>
+    </string-array>
+    <string name="title_activity_maps">Map</string>
+</resources>

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.ProfileFragment">
+
+    <include
+        android:id="@+id/toolbarLayout"
+        layout="@layout/toolbar_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/button_update"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarLayout">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textview_profile_firstname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/work_sans"
+                    android:text="First Name"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textinput_profile_firstname"
+                    style="@style/CustomEditTextprofile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintEnd_toEndOf="@+id/textview_profile_firstname"
+                    app:layout_constraintStart_toStartOf="@+id/textview_profile_firstname"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_profile_firstname">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edittext_profile_firstname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/work_sans"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textview_lastname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/work_sans"
+                    android:text="Last Name"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="@+id/textview_profile_firstname"
+                    app:layout_constraintStart_toStartOf="@+id/textview_profile_firstname"
+                    app:layout_constraintTop_toBottomOf="@+id/textinput_profile_firstname" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textinput_lastname"
+                    style="@style/CustomEditTextprofile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintEnd_toEndOf="@+id/textview_profile_firstname"
+                    app:layout_constraintStart_toStartOf="@+id/textview_profile_firstname"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_lastname">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edittext_lastname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/work_sans"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textview_username"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/work_sans"
+                    android:text="Username"
+                    android:textColor="@color/colorPrimary"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="@+id/textview_profile_firstname"
+                    app:layout_constraintStart_toStartOf="@+id/textview_profile_firstname"
+                    app:layout_constraintTop_toBottomOf="@+id/textinput_email" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textinput_username"
+                    style="@style/CustomEditTextprofile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:visibility="visible"
+                    app:boxStrokeColor="@color/md_grey_800"
+                    app:layout_constraintEnd_toEndOf="@+id/textview_username"
+                    app:layout_constraintStart_toStartOf="@+id/textview_username"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_username">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edittext_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:fontFamily="@font/work_sans"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textview_email"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/work_sans"
+                    android:text="Email"
+                    android:textColor="@color/colorPrimary"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="@+id/textview_profile_firstname"
+                    app:layout_constraintStart_toStartOf="@+id/textview_profile_firstname"
+                    app:layout_constraintTop_toBottomOf="@+id/textinput_lastname" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textinput_email"
+                    style="@style/CustomEditTextprofile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="@+id/textview_profile_firstname"
+                    app:layout_constraintStart_toStartOf="@+id/textview_profile_firstname"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_email">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edittext_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/work_sans"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textview_mobilenumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/work_sans"
+                    android:text="Mobile Number"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="@+id/textview_profile_firstname"
+                    app:layout_constraintStart_toStartOf="@+id/textview_profile_firstname"
+                    app:layout_constraintTop_toBottomOf="@+id/textinput_username" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textinput_mobilenumber"
+                    style="@style/CustomEditTextprofile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintEnd_toEndOf="@+id/textview_profile_firstname"
+                    app:layout_constraintStart_toStartOf="@+id/textview_profile_firstname"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_mobilenumber">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edittext_mobilenumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:fontFamily="@font/work_sans"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textview_password"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/work_sans"
+                    android:maxLength="13"
+                    android:text="Password"
+                    android:textColor="@color/colorBlack"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@+id/textview_profile_firstname"
+                    app:layout_constraintStart_toStartOf="@+id/textview_profile_firstname"
+                    app:layout_constraintTop_toBottomOf="@+id/textinput_mobilenumber" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textinput_password"
+                    style="@style/CustomEditTextprofile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@+id/textview_profile_firstname"
+                    app:layout_constraintStart_toStartOf="@+id/textview_profile_firstname"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_password"
+                    app:passwordToggleEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edittext_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/work_sans"
+                        android:inputType="textPassword"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_update"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="Update"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

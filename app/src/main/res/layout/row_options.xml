@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/viewOptionOne"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="@drawable/selector_options"
+        app:layout_constraintEnd_toEndOf="@id/textViewOptionsOne"
+        app:layout_constraintBottom_toBottomOf="@id/textViewOptionsOne"
+        app:layout_constraintTop_toTopOf="@id/textViewOptionsOne"
+        app:layout_constraintStart_toStartOf="@id/viewStartOne"/>
+
+
+    <View
+        android:id="@+id/viewStartOne"
+        android:layout_width="8dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="28dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/textViewOptionsOne"
+        app:layout_constraintTop_toTopOf="@id/textViewOptionsOne"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageViewOptionOne"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:src="@drawable/selector_bullet"
+        android:layout_marginStart="2dp"
+        app:layout_constraintBottom_toBottomOf="@id/textViewOptionsOne"
+        app:layout_constraintTop_toTopOf="@id/textViewOptionsOne"
+        app:layout_constraintStart_toEndOf="@id/viewStartOne"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewOptionsOne"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/selector_answer"
+        android:paddingStart="8dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="8dp"
+        android:text="Lorem ipsum dolor sit amet"
+        android:textColor="@color/selector_optiontext"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imageViewOptionOne"
+        app:layout_constraintTop_toBottomOf="@id/textViewOptionsOne" />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

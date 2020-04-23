@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.RaisedSOSDetailsFragment">
+
+    <include
+        android:id="@+id/toolbarLayout"
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textview_respondedetail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="@font/work_sans_bold"
+        android:text="Responder Detail"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarLayout" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardview_responder_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="5dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textview_respondedetail">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imageview_roaming_staff_image"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_user_colorful" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintlayout_roaming_staff_basic_detial"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/imageview_roaming_staff_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/imageview_roaming_staff_image"
+                app:layout_constraintTop_toTopOf="@id/imageview_roaming_staff_image">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textview_roaming_staff_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/work_sans_bold"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Martin Guptil" />
+
+                <androidx.appcompat.widget.AppCompatRatingBar
+                    android:id="@+id/ratingbar_roaming_staff_rating"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:max="5"
+                    android:numStars="5"
+                    android:progressTint="@color/colorPrimaryDark"
+                    android:rating="4"
+                    android:stepSize="0.5"
+                    android:visibility="visible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_roaming_staff_name" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textview_roaming_staff_age"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ratingbar_roaming_staff_rating"
+                    tools:text="Age : 25" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_your_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:text="Your Rating"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/constraintlayout_roaming_staff_basic_detial" />
+
+
+            <androidx.appcompat.widget.AppCompatRatingBar
+                android:id="@+id/roaming_staff_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:isIndicator="true"
+                android:max="5"
+                android:numStars="5"
+                android:progressTint="@color/colorPrimaryDark"
+                tools:rating="4"
+                android:stepSize="0.5"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_your_rating" />
+
+
+            <!--   <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_roaming_staff_name_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/work_sans_bold"
+                android:text="Name  : "
+                app:layout_constraintEnd_toStartOf="@+id/textview_roaming_staff_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_roaming_staff_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textview_roaming_staff_name_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textview_roaming_staff_name_title"
+                app:layout_constraintTop_toTopOf="@+id/textview_roaming_staff_name_title"
+                tools:text="Mark Zukerberg" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_roaming_staff_age_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/work_sans_bold"
+                android:text="Age      : "
+                app:layout_constraintEnd_toStartOf="@+id/textview_roaming_staff_age"
+                app:layout_constraintStart_toStartOf="@+id/textview_roaming_staff_name_title"
+                app:layout_constraintTop_toBottomOf="@+id/textview_roaming_staff_name_title" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_roaming_staff_age"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textview_roaming_staff_age_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textview_roaming_staff_age_title"
+                app:layout_constraintTop_toTopOf="@+id/textview_roaming_staff_age_title"
+                tools:text="26 Year" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_roaming_staff_rate_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/work_sans_bold"
+                android:text="Rate     : "
+                app:layout_constraintEnd_toStartOf="@+id/textview_roaming_staff_rate"
+                app:layout_constraintStart_toStartOf="@+id/textview_roaming_staff_name_title"
+                app:layout_constraintTop_toBottomOf="@+id/textview_roaming_staff_age_title" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_roaming_staff_rate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textview_roaming_staff_rate_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textview_roaming_staff_rate_title"
+                app:layout_constraintTop_toTopOf="@+id/textview_roaming_staff_rate_title"
+                tools:text="4" />-->
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardview_sos_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="5dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_sosraisedon_title">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_sos_date_titlt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/work_sans_bold"
+                android:text="Date  : "
+                app:layout_constraintEnd_toStartOf="@+id/textview_sos_date"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_sos_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textview_sos_date_titlt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textview_sos_date_titlt"
+                app:layout_constraintTop_toTopOf="@+id/textview_sos_date_titlt"
+                tools:text="23/09/2019" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_sos_time_titlt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/work_sans_bold"
+                android:text="Time  : "
+                app:layout_constraintEnd_toStartOf="@+id/textview_sos_time"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_sos_date_titlt" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_sos_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textview_sos_time_titlt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textview_sos_time_titlt"
+                app:layout_constraintTop_toTopOf="@+id/textview_sos_time_titlt"
+                tools:text="02:30 PM" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_sos_type_lbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/work_sans_bold"
+                android:text="SOS Type  : "
+                app:layout_constraintEnd_toStartOf="@+id/textview_sos_type"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_sos_time_titlt" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_sos_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textview_sos_type_lbl"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textview_sos_type_lbl"
+                app:layout_constraintTop_toTopOf="@+id/textview_sos_type_lbl"
+                tools:text="Medical" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_sos_completedtime_titlt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/work_sans_bold"
+                android:text="Completed SOS Time  : "
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textview_sos_comletedtime"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_sos_type_lbl" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_sos_comletedtime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textview_sos_completedtime_titlt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textview_sos_completedtime_titlt"
+                app:layout_constraintTop_toTopOf="@+id/textview_sos_completedtime_titlt"
+                app:layout_constraintVertical_bias="0.0"
+                tools:text="40 Min" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textview_sosraisedon_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/work_sans_bold"
+        android:text="SOS Detail"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/textview_respondedetail"
+        app:layout_constraintStart_toStartOf="@+id/textview_respondedetail"
+        app:layout_constraintTop_toBottomOf="@+id/cardview_responder_detail" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

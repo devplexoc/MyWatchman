@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.AddEmergencyContactFragment">
+
+    <include
+        android:id="@+id/toolbarLayout"
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarLayout">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textview_addcontact_contactname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/work_sans"
+            android:text="Contact Name"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textinput_addcontact_contactname"
+            style="@style/CustomEditTextprofile"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toStartOf="@+id/imageview_contact"
+            app:layout_constraintStart_toStartOf="@+id/textview_addcontact_contactname"
+            app:layout_constraintTop_toBottomOf="@+id/textview_addcontact_contactname">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edittext_addcontact_contactname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/work_sans"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageview_contact"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_contact"
+            app:layout_constraintBottom_toBottomOf="@+id/textinput_addcontact_contactname"
+            app:layout_constraintEnd_toEndOf="@+id/textview_addcontact_contactname"
+            app:layout_constraintStart_toEndOf="@+id/textinput_addcontact_contactname"
+            app:layout_constraintTop_toTopOf="@+id/textinput_addcontact_contactname" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textview_addcontact_contactphone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/work_sans"
+            android:text="Contact Number"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="@+id/textview_addcontact_contactname"
+            app:layout_constraintStart_toStartOf="@+id/textview_addcontact_contactname"
+            app:layout_constraintTop_toBottomOf="@+id/textinput_addcontact_contactname" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textview_countrycode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/work_sans"
+            android:text="+231"
+            android:textColor="@color/colorBlack"
+            android:textSize="18dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textinput_addcontact_contactphone"
+            app:layout_constraintEnd_toStartOf="@+id/textinput_addcontact_contactphone"
+            app:layout_constraintStart_toStartOf="@+id/textview_addcontact_contactphone"
+            app:layout_constraintTop_toTopOf="@+id/textinput_addcontact_contactphone" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textinput_addcontact_contactphone"
+            style="@style/CustomEditTextprofile"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toEndOf="@+id/textview_addcontact_contactphone"
+            app:layout_constraintStart_toEndOf="@+id/textview_countrycode"
+            app:layout_constraintTop_toBottomOf="@+id/textview_addcontact_contactphone">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edittext_addcontact_contactphone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/work_sans"
+                android:maxLength="9"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textview_addcontact_contectemail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/work_sans"
+            android:text="Contact Email"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="@+id/textview_addcontact_contactname"
+            app:layout_constraintStart_toStartOf="@+id/textview_addcontact_contactname"
+            app:layout_constraintTop_toBottomOf="@+id/textinput_addcontact_contactphone" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textinput_addcontact_contectemail"
+            style="@style/CustomEditTextprofile"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toEndOf="@+id/textview_addcontact_contactname"
+            app:layout_constraintStart_toStartOf="@+id/textview_addcontact_contactname"
+            app:layout_constraintTop_toBottomOf="@+id/textview_addcontact_contectemail">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edittext_addcontact_contectemail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/work_sans"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textview_addcontact_contectrelation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/work_sans"
+            android:text="Relation"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="@+id/textview_addcontact_contactname"
+            app:layout_constraintStart_toStartOf="@+id/textview_addcontact_contactname"
+            app:layout_constraintTop_toBottomOf="@+id/textinput_addcontact_contectemail" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textinput_addcontact_contectrelation"
+            style="@style/CustomEditTextprofile"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toEndOf="@+id/textview_addcontact_contactname"
+            app:layout_constraintStart_toStartOf="@+id/textview_addcontact_contactname"
+            app:layout_constraintTop_toBottomOf="@+id/textview_addcontact_contectrelation">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edittext_addcontact_contectrelation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/work_sans"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_addcontact_contactlist"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="20dp"
+            android:text="contact List"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textinput_addcontact_contectrelation" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_addcontact_add"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="20dp"
+            android:text="Add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

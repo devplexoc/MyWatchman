@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragment.AddressDetailFragment">
+
+    <include
+        android:id="@+id/toolbarLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardview_address_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="10dp"
+        android:layout_margin="5dp"
+        app:cardPreventCornerOverlap="true"
+        app:layout_constraintBottom_toTopOf="@+id/textview_raised_sos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarLayout">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_addresss_lbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Address"
+                android:textSize="18dp"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/work_sans_bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="05dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/address"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textview_addresss_lbl"
+                app:layout_constraintTop_toBottomOf="@id/textview_addresss_lbl" />
+
+
+            <!--  <androidx.appcompat.widget.AppCompatTextView
+                  android:id="@+id/textview_plan_lbl"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:padding="10dp"
+                  android:text="Current Plan"
+                  app:layout_constraintEnd_toStartOf="@+id/textview_plan_price_lbl"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintTop_toBottomOf="@id/textview_address" />
+
+              <androidx.appcompat.widget.AppCompatTextView
+                  android:id="@+id/textview_plan"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:fontFamily="@font/work_sans_medium"
+                  android:paddingStart="10dp"
+                  android:paddingEnd="10dp"
+                  android:paddingBottom="05dp"
+                  android:text="1 MONTH SECURITY"
+                  android:textSize="16sp"
+                  app:layout_constraintEnd_toStartOf="@+id/textview_plan_price"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintTop_toBottomOf="@id/textview_plan_lbl" />
+
+              <androidx.appcompat.widget.AppCompatTextView
+                  android:id="@+id/textview_plan_price_lbl"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:padding="10dp"
+                  android:text="Plan Price"
+                  android:textAlignment="viewEnd"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  app:layout_constraintStart_toEndOf="@+id/textview_plan_lbl"
+                  app:layout_constraintTop_toBottomOf="@id/textview_address" />
+
+              <androidx.appcompat.widget.AppCompatTextView
+                  android:id="@+id/textview_plan_price"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:fontFamily="@font/work_sans_medium"
+                  android:paddingStart="10dp"
+                  android:paddingEnd="10dp"
+                  android:paddingBottom="05dp"
+                  android:text="$50"
+                  android:textAlignment="viewEnd"
+                  android:textSize="16sp"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  app:layout_constraintStart_toEndOf="@+id/textview_plan"
+                  app:layout_constraintTop_toBottomOf="@id/textview_plan_price_lbl" />
+
+
+              <androidx.appcompat.widget.AppCompatTextView
+                  android:id="@+id/textview_nxt_trns_date_lbl"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:padding="10dp"
+                  android:text="Next Transaction Date"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintTop_toBottomOf="@id/textview_plan_price" />
+
+              <androidx.appcompat.widget.AppCompatTextView
+                  android:id="@+id/textview_nxt_trns_date"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:fontFamily="@font/work_sans_medium"
+                  android:paddingStart="10dp"
+                  android:paddingEnd="10dp"
+                  android:paddingBottom="05dp"
+                  android:text="01/Mar/2020"
+                  android:textSize="16sp"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintTop_toBottomOf="@id/textview_nxt_trns_date_lbl" />-->
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textview_raised_sos"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:text="Raised SOS"
+        android:textSize="18dp"
+        android:textColor="@color/colorPrimary"
+        android:fontFamily="@font/work_sans_bold"
+        app:layout_constraintBottom_toTopOf="@id/recyclerview_raised_sos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardview_address_detail" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_raised_sos"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textview_raised_sos" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textview_norecordfound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/work_sans_bold"
+        android:text="No Record Found!"
+        android:textSize="18dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_raised_sos" />
+
+    <!--<com.google.android.material.tabs.TabLayout
+        android:id="@+id/tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardview_address_detail"
+        app:tabBackground="@color/colorWhite"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/primary_dark"
+        app:tabMode="fixed"
+        app:tabTextColor="@color/primary" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tablayout" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
