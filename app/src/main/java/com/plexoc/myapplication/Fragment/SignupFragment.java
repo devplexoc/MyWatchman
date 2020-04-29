@@ -203,14 +203,14 @@ public class SignupFragment extends BaseFragment {
             textinput_firstname.setErrorEnabled(false);
         }
 
-        if (edittext_lastname.getText().toString().trim().isEmpty()) {
+       /* if (edittext_lastname.getText().toString().trim().isEmpty()) {
             textinput_lastname.setError("Please enter last name");
             edittext_lastname.requestFocus();
             return false;
         } else {
             edittext_lastname.clearFocus();
             textinput_lastname.setErrorEnabled(false);
-        }
+        }*/
 
         if (edittext_username.getText().toString().trim().isEmpty()) {
             textinput_username.setError("Please enter Username");
@@ -248,7 +248,7 @@ public class SignupFragment extends BaseFragment {
             textinput_mobilenumber.setErrorEnabled(false);
         }*/
 
-        if (edittext_email.getText().toString().trim().isEmpty()) {
+       /* if (edittext_email.getText().toString().trim().isEmpty()) {
             textinput_email.setError("Please enter Email");
             edittext_email.requestFocus();
             return false;
@@ -256,7 +256,7 @@ public class SignupFragment extends BaseFragment {
             edittext_email.clearFocus();
             textinput_email.setErrorEnabled(false);
         }
-
+*/
         if (!edittext_email.getText().toString().trim().isEmpty()) {
             if (!isValidEmail(edittext_email.getText().toString().trim())) {
                 textinput_email.setError("Please enter valid email address");

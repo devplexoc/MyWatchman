@@ -61,6 +61,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.plexoc.myapplication.Activity.LoginSignupActivity;
 import com.plexoc.myapplication.Activity.MapsActivity;
+import com.plexoc.myapplication.Activity.PaymentActivity;
 import com.plexoc.myapplication.Adapter.AddressAdpter;
 import com.plexoc.myapplication.Adapter.ContactAdpter;
 import com.plexoc.myapplication.Adapter.DashboardAddressAdpter;
@@ -192,12 +193,14 @@ public class DashboardFragment extends BaseFragment {
                             public void onPermissionGranted(PermissionGrantedResponse response) {
                                 Log.e("LocationPermission", "Granted");
 
-                                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                              /*  if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                                     showLocationDialog();
                                 } else {
                                     getLastLocation();
                                     //mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-                                }
+                                }*/
+
+                                getActivity().startActivity(new Intent(getContext(), PaymentActivity.class));
 
                             }
 

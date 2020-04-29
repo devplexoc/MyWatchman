@@ -7,7 +7,7 @@ public class RaisedSOSUser {
     @SerializedName("Id")
     public int Id;
 
-    @SerializedName("UserId")
+    @SerializedName("CustomerId")
     public int UserId;
 
     @SerializedName("Address")

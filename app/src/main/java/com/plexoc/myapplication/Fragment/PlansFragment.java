@@ -1,6 +1,7 @@
 package com.plexoc.myapplication.Fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatCheckBox;
@@ -32,6 +33,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
+import com.plexoc.myapplication.Activity.PaymentActivity;
 import com.plexoc.myapplication.Adapter.ContactAdpter;
 import com.plexoc.myapplication.Adapter.PlansAdpter;
 import com.plexoc.myapplication.Model.EmergencyContact;
@@ -287,8 +289,8 @@ public class PlansFragment extends BaseFragment {
                     if (response.body().Item != null) {
                         Prefs.putString(Prefs.USER, new Gson().toJson(user));
                         user = new Gson().fromJson(Prefs.getString(Prefs.USER), User.class);
-                        replaceFragment(new PaymentSuccessfullFragment(), null);
-                        //replaceFragment(new RoamingStaffIdentityFragment(), null);
+                        //replaceFragment(new PaymentSuccessfullFragment(), null);
+                        startActivity(new Intent(getContext(), PaymentActivity.class));
                     } else {
                         showMessage(response.body().Message);
                     }
