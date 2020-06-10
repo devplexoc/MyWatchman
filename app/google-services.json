@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "1008698887699",
+    "firebase_url": "https://innate-ally-268922.firebaseio.com",
+    "project_id": "innate-ally-268922",
+    "storage_bucket": "innate-ally-268922.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1008698887699:android:d086b3f933da0dcbe5b9e6",
+        "android_client_info": {
+          "package_name": "com.plexoc.my_watchman_responder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1008698887699-ca855c1b3359sgqndi7sk7401pt3k0vh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9gr5LYdlDGlOLKzH76XUPBq04519nf1w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1008698887699-ca855c1b3359sgqndi7sk7401pt3k0vh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1008698887699:android:98d481ebd9d6a1afe5b9e6",
+        "android_client_info": {
+          "package_name": "com.plexoc.mywatchman"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1008698887699-ca855c1b3359sgqndi7sk7401pt3k0vh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9gr5LYdlDGlOLKzH76XUPBq04519nf1w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1008698887699-ca855c1b3359sgqndi7sk7401pt3k0vh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

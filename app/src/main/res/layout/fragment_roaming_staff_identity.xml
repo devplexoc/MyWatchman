@@ -203,7 +203,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardciew_roaming_staff_detail"
-        tools:context="com.example.tutorialspoint7.myapplication.MapsActivity" />-->
+        tools:context="com.example.tutorialspoint7.mywatchman.MapsActivity" />-->
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_validate_roaming_staff"

@@ -20,5 +20,13 @@
         <item>Defense</item>
         <item>Transportation</item>
     </string-array>
+
+    <!-- Push Notification Channel -->
+    <string name="default_notification_channel_id" translatable="false">default_fcm_notification</string>
+    <string name="channel_id_default" translatable="false">default_notification_channel</string>
+    <string name="channel_name_default" translatable="false">Receive General Notifications</string>
+    <string name="channel_description_default" translatable="false">Receive push notifications in the notification bar</string>
+
+
     <string name="title_activity_maps">Map</string>
 </resources>
