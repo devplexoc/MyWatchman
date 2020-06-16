@@ -41,11 +41,13 @@ public class OTPConfirmFragment extends BaseFragment {
     private OtpView otp_view;
     private AppCompatTextView textViewResendOTP;
     private AppCompatTextView textViewTimer;
+    private boolean isForgotPassword;
     /*private TextInputEditText otp_view;
     private TextInputLayout textinput_otp_view;*/
 
-    public OTPConfirmFragment(User user) {
+    public OTPConfirmFragment(User user,boolean isForgotPassword) {
         this.user = user;
+        this.isForgotPassword = isForgotPassword;
     }
 
     @Override
@@ -76,7 +78,11 @@ public class OTPConfirmFragment extends BaseFragment {
                 if (doValidate()) {
                     if (otp_view.getText().toString().trim().equals(user.Otp)) {
 
+                        if(!isForgotPassword)
                         CallSignupApi();
+                        else {
+                            replaceFragment(new NewPasswordFragment(),null);
+                        }
                         //replaceFragment(new PlansFragment(user), null);
                     } else
                         Toast.makeText(getContext(), "Please Enter Valid OTP", Toast.LENGTH_SHORT).show();

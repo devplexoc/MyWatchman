@@ -167,7 +167,7 @@ public class SignupFragment extends BaseFragment {
                     if (response.body().Code == 200) {
                         user.Otp = response.body().Item.Otp;
                         //Toast.makeText(getContext(), "Your OTP is : " + user.Otp, Toast.LENGTH_LONG).show();
-                        replaceFragment(new OTPConfirmFragment(user), null);
+                        replaceFragment(new OTPConfirmFragment(user,false), null);
                     } else {
                         showMessage(response.body().Message);
                     }
@@ -181,7 +181,6 @@ public class SignupFragment extends BaseFragment {
                         e.printStackTrace();
                     }
                 }
-
                 LoadingDialog.cancelLoading();
             }
 
