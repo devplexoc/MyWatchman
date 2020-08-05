@@ -40,11 +40,12 @@ public class ForgotPasswordFragment extends BaseFragment {
 
     private TextInputLayout inputlayout_forgotpassword_email;
     private TextInputEditText edittext_forgotpassword_email;
-    private AppCompatTextView textview_forgot_password,textview_countrycode,textview_username;
+    private AppCompatTextView textview_forgot_password, textview_countrycode, textview_username;
     private RadioGroup radioGroup;
     private RadioButton radioButton;
     private RadioButton radiobutton_mobilenumber, radiobutton_email;
     private String LoginUser;
+    private AppCompatTextView textViewone, textViewtwo, textViewthree;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,6 +58,9 @@ public class ForgotPasswordFragment extends BaseFragment {
         textview_username = view.findViewById(R.id.textview_username);
         textview_countrycode = view.findViewById(R.id.textview_countrycode);
         textview_forgot_password = view.findViewById(R.id.textview_forgot_password);
+        textViewone = view.findViewById(R.id.textview_one);
+        textViewtwo = view.findViewById(R.id.textview_two);
+        textViewthree = view.findViewById(R.id.textview_three);
         textview_forgot_password.setVisibility(View.GONE);
 
         radioGroup = view.findViewById(R.id.radiogroup);
@@ -75,6 +79,9 @@ public class ForgotPasswordFragment extends BaseFragment {
                             radiobutton_email.setChecked(false);
                             inputlayout_forgotpassword_email.setError(" ");
                             edittext_forgotpassword_email.setText("");
+                            textViewone.setVisibility(View.INVISIBLE);
+                            textViewtwo.setVisibility(View.INVISIBLE);
+                            textViewthree.setVisibility(View.INVISIBLE);
                             edittext_forgotpassword_email.setFilters(new InputFilter[]{new InputFilter.LengthFilter(9)});
                             edittext_forgotpassword_email.setInputType(InputType.TYPE_CLASS_NUMBER);
                         } else {
@@ -90,6 +97,9 @@ public class ForgotPasswordFragment extends BaseFragment {
                             radiobutton_mobilenumber.setChecked(false);
                             inputlayout_forgotpassword_email.setError(" ");
                             edittext_forgotpassword_email.setText("");
+                            textViewone.setVisibility(View.VISIBLE);
+                            textViewtwo.setVisibility(View.VISIBLE);
+                            textViewthree.setVisibility(View.VISIBLE);
                             edittext_forgotpassword_email.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50)});
                             edittext_forgotpassword_email.setInputType(InputType.TYPE_CLASS_TEXT);
                         } else {
@@ -115,7 +125,7 @@ public class ForgotPasswordFragment extends BaseFragment {
                         LoginUser = textview_countrycode.getText().toString().trim() + edittext_forgotpassword_email.getText().toString().trim();
                         CheckOTP();
                         //textview_forgot_password.setVisibility(View.GONE);
-                    } else{
+                    } else {
                         LoginUser = edittext_forgotpassword_email.getText().toString().trim();
                         //textview_forgot_password.setVisibility(View.VISIBLE);
                         ForgotPassword();
@@ -176,15 +186,17 @@ public class ForgotPasswordFragment extends BaseFragment {
             return;
         }
         LoadingDialog.showLoadingDialog(getContext());
-        getApiClient().Checkuser(LoginUser,"","").enqueue(new Callback<Response<User>>() {
+        getApiClient().CheckuserForgot(LoginUser).enqueue(new Callback<Response<User>>() {
             @Override
             public void onResponse(Call<Response<User>> call, retrofit2.Response<Response<User>> response) {
                 if (response.isSuccessful()) {
                     closeKeybord();
                     if (response.body().Code == 200) {
+                        user.Mobile = "+231" + edittext_forgotpassword_email.getText().toString();
+                        user.CustomerId = response.body().Item.CustomerId;
                         user.Otp = response.body().Item.Otp;
-                        Toast.makeText(getContext(), "Your OTP is : " + user.Otp, Toast.LENGTH_LONG).show();
-                        replaceFragment(new OTPConfirmFragment(user,false), null);
+                        //Toast.makeText(getContext(), "Your OTP is : " + user.Otp, Toast.LENGTH_LONG).show();
+                        replaceFragment(new OTPConfirmFragment(user, true), null);
                     } else {
                         showMessage(response.body().Message);
                     }
@@ -221,10 +233,10 @@ public class ForgotPasswordFragment extends BaseFragment {
                     if (response.code() == Constants.SuccessCode) {
                         if (response.body().Item != null) {
                             showMessage("Forgot Password Successfull");
-                            if(radiobutton_mobilenumber.isChecked()){
-                                replaceFragment(new OTPConfirmFragment(user,true),null);
+                            if (radiobutton_mobilenumber.isChecked()) {
+                                replaceFragment(new OTPConfirmFragment(user, true), null);
                                 textview_forgot_password.setVisibility(View.GONE);
-                            }else {
+                            } else {
                                 textview_forgot_password.setVisibility(View.VISIBLE);
                             }
                             //textview_forgot_password.setVisibility(View.GONE);
@@ -255,7 +267,7 @@ public class ForgotPasswordFragment extends BaseFragment {
     }
 
     private boolean doValidate() {
-        if(radiobutton_mobilenumber.isChecked()){
+        if (radiobutton_mobilenumber.isChecked()) {
             if (edittext_forgotpassword_email.getText().toString().trim().isEmpty()) {
                 inputlayout_forgotpassword_email.setError("Please enter Mobile Number");
                 edittext_forgotpassword_email.requestFocus();
@@ -264,7 +276,7 @@ public class ForgotPasswordFragment extends BaseFragment {
                 edittext_forgotpassword_email.clearFocus();
                 inputlayout_forgotpassword_email.setErrorEnabled(false);
             }
-        }else {
+        } else {
             if (edittext_forgotpassword_email.getText().toString().trim().isEmpty()) {
                 inputlayout_forgotpassword_email.setError("Please enter email");
                 edittext_forgotpassword_email.requestFocus();

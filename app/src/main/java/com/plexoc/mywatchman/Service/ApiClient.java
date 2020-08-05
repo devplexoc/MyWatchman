@@ -4,24 +4,29 @@ import com.plexoc.mywatchman.Model.Address;
 import com.plexoc.mywatchman.Model.ChangePassword;
 import com.plexoc.mywatchman.Model.EmergencyContact;
 import com.plexoc.mywatchman.Model.ListResponse;
+import com.plexoc.mywatchman.Model.Notifiaction;
 import com.plexoc.mywatchman.Model.Plan;
 import com.plexoc.mywatchman.Model.PlanDurationDiscount;
 import com.plexoc.mywatchman.Model.QuestionAnswer;
 import com.plexoc.mywatchman.Model.RaisedSOSUser;
 import com.plexoc.mywatchman.Model.Rating;
 import com.plexoc.mywatchman.Model.Response;
+import com.plexoc.mywatchman.Model.SecurityQuestion;
 import com.plexoc.mywatchman.Model.SosType;
 import com.plexoc.mywatchman.Model.TransactionHistory;
 import com.plexoc.mywatchman.Model.User;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -90,6 +95,10 @@ public interface ApiClient {
     @GET("customer/CustomerSigupByMobileExistsGenerateOTP")
     Call<Response<User>> Checkuser(@Query("Mobile") String Mobile, @Query("Username") String Username, @Query("Email") String Email);
 
+
+    @GET("customer/CustomerGenrateOTPByMobileExists")
+    Call<Response<User>> CheckuserForgot(@Query("Mobile") String Mobile);
+
     @POST("customer/EmergencyContactUpdateStatus")
     Call<Response<EmergencyContact>> CommunityRequestAproveReject(@Query("id") int id, @Query("ApprovedStatus") boolean ApprovedStatus);
 
@@ -98,7 +107,7 @@ public interface ApiClient {
 
     @FormUrlEncoded
     @POST("customer/SubCustomerUpsert")
-    Call<Response<User>> SubUserSignup(@Field("Id") int Id, @Field("ParentCustomer") int ParentCustomer, @Field("FirstName") String FirstName, @Field("LastName") String LastName, @Field("Mobile") String Mobile,@Field("Email") String Email, @Field("Password") String Password);
+    Call<Response<User>> SubUserSignup(@Field("Id") int Id, @Field("ParentCustomer") int ParentCustomer, @Field("FirstName") String FirstName, @Field("LastName") String LastName, @Field("Mobile") String Mobile, @Field("Email") String Email, @Field("Password") String Password);
 
     @GET("customer/SubCustomerAll")
     Call<ListResponse<User>> getAllSubUsers(@Query("CustomerId") int CustomerId, @Query("Offset") int Offset, @Query("Limit") int Limit, @Query("search") String search);
@@ -123,5 +132,22 @@ public interface ApiClient {
 
     @POST("rating/RatingUpsert")
     Call<Response<Rating>> insertRating(@Body Rating rating);
+
+    @GET("customer/NotificationAllByCustomerId")
+    Call<ListResponse<Notifiaction>> getNotificationList(@Query("CustomerId") int ResponderId, @Query("Offset") int Offset,
+                                                         @Query("Limit") int Limit);
+
+    @Multipart
+    @POST("customer/CustomerProfilePictureUpdate")
+    Call<Response<User>> updateProfilePicture(@Query("Id") int id, @Part MultipartBody.Part part);
+
+    @GET("securityQuestions/SecurityQuestionsSelectAll")
+    Call<ListResponse<SecurityQuestion>> getAllSecurityQuestion(@Query("Offset") int Offset, @Query("Limit") int Limit);
+
+    @POST("securityQuestions/SecurityQuestionsUpsert")
+    Call<Response<SecurityQuestion>> insertSecurityQuestionAnswer(@Body SecurityQuestion securityQuestion);
+
+    @GET("securityQuestions/CustomersVSSecurityQuestionsByCustomerId")
+    Call<Response<SecurityQuestion>> getSecurityQuestionAnswerByUserId(@Query("CustomerId") int CustomerId);
 
 }

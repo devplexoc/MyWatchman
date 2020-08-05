@@ -3,6 +3,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="string">Lorem ipsum dolor sit amet,consectetur adipisicing elit. Doloribus, saepe, soluta.</string>
     <string name="address">A-101, Himani Complex, near Ahmedabad 15 restaruant, Vastarpur,Ahmedabad,380052.</string>
     <string name="location_permission_msg">Location Permission is required.Please grant permission from setting.</string>
 
@@ -19,6 +20,13 @@
         <item>Business</item>
         <item>Defense</item>
         <item>Transportation</item>
+    </string-array>
+
+    <string-array name="questions">
+        <item>In what town or city did you meet your spouse or partner?</item>
+        <item>What elementary school did you attend?</item>
+        <item>What is the name of the city/town where you were born?</item>
+        <item>What is your father\'s first name?</item>
     </string-array>
 
     <!-- Push Notification Channel -->

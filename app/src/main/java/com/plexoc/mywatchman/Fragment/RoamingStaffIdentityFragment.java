@@ -180,7 +180,16 @@ public class RoamingStaffIdentityFragment extends BaseFragment implements OnMapR
                         } else {
                             ResponderName = response.body().Item.ResponserName;
                             textview_roaming_staff_name.setText(response.body().Item.ResponserName);
+
+                            if (response.body().Item.RoamingStaffPosition != null) {
+                                textview_roaming_staff_age.setVisibility(View.VISIBLE);
+                                textview_roaming_staff_age.setText("Position : " + response.body().Item.RoamingStaffPosition);
+                            }else {
+                                textview_roaming_staff_age.setVisibility(View.GONE);
+                            }
                         }
+
+
                         try {
                             if (response.body().Item.RoamingStaffImageUrl != null) {
                                 Glide.with(getContext())

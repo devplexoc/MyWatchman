@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -37,9 +38,10 @@ public class NewPasswordFragment extends BaseFragment {
     private TextInputLayout textinput_new_password, textinput_confirmpasword;
     private TextInputEditText edittext_new_password, edittext_confirmpasword;
     private AppCompatButton button_save;
+    private User user;
 
-    public NewPasswordFragment() {
-        // Required empty public constructor
+    public NewPasswordFragment(User user) {
+        this.user = user;
     }
 
 
@@ -49,18 +51,24 @@ public class NewPasswordFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_new_password, container, false);
 
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.back);
+        toolbar.setTitle("Change Password");
+        toolbar.setNavigationOnClickListener(view1 -> getActivity().onBackPressed());
+
         textinput_new_password = view.findViewById(R.id.textinput_new_password);
         textinput_confirmpasword = view.findViewById(R.id.textinput_confirmpasword);
         edittext_new_password = view.findViewById(R.id.edittext_new_password);
         edittext_confirmpasword = view.findViewById(R.id.edittext_confirmpasword);
         button_save = view.findViewById(R.id.button_save);
 
+
         button_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(doValidate()){
-                    user.Password = edittext_confirmpasword.getText().toString().trim();
-                    //CallUpdatePasswordApi();
+                if (doValidate()) {
+                    //user.Password = edittext_confirmpasword.getText().toString().trim();
+                    CallUpdatePasswordApi();
                 }
             }
         });
@@ -75,26 +83,19 @@ public class NewPasswordFragment extends BaseFragment {
             return;
         }
         LoadingDialog.showLoadingDialog(getContext());
-        getApiClient().getChangePassword(user.Id, edittext_confirmpasword.getText().toString().trim(), 1).enqueue(new Callback<Response<ChangePassword>>() {
+        getApiClient().getChangePassword(user.CustomerId, edittext_confirmpasword.getText().toString().trim(), 2).enqueue(new Callback<Response<ChangePassword>>() {
             @Override
             public void onResponse(Call<Response<ChangePassword>> call, retrofit2.Response<Response<ChangePassword>> response) {
                 if (response.code() == Constants.SuccessCode) {
-                    if (response.body().Item != null) {
-
-                        response.body().Item.Password = edittext_confirmpasword.getText().toString().trim();
-
                         /*Prefs.putString(Prefs.USER, new Gson().toJson(response.body().Item));
                         user = new Gson().fromJson(Prefs.getString(Prefs.USER), User.class);*/
 
-                        Toast.makeText(getContext(), "Password Change Successfully", Toast.LENGTH_SHORT).show();
-                        //getActivity().finish();
+                    Toast.makeText(getContext(), "Password Change Successfully", Toast.LENGTH_SHORT).show();
+                    //getActivity().finish();
 
-                        Intent intent = new Intent(getContext(), LoginSignupActivity.class);
-                        startActivity(intent);
-                        getActivity().finish();
-
-                    } else
-                        showMessage(response.body().Message);
+                    Intent intent = new Intent(getContext(), LoginSignupActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
                     //Toast.makeText(getContext(), response.body().Message, Toast.LENGTH_SHORT).show();
 
                 } else if (response.code() == Constants.InternalServerError) {

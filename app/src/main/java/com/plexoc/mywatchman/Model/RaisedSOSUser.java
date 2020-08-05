@@ -103,6 +103,12 @@ public class RaisedSOSUser {
     @SerializedName("RoamingStaffImageUrl")
     public String RoamingStaffImageUrl;
 
+    @SerializedName("CustomerProfilePicture")
+    public String CustomerProfilePicture;
+
+    @SerializedName("RoamingStaffPosition")
+    public String RoamingStaffPosition;
+
 
 
 }

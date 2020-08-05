@@ -134,6 +134,7 @@ public class QuestionFragment extends BaseFragment {
                     }
 
                 } else {
+                    editTextNote.getText().clear();
                     QuestionAnswer questionAnswer = new QuestionAnswer(questionModelList.get(count).question, optionsModel.optionText);
                     questionAnswerList.add(questionAnswer);
                     count++;

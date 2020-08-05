@@ -70,7 +70,7 @@ public class AddressFragment extends BaseFragment {
             public void onClick(View v) {
                 //replaceFragment(new AddAddressFragment(), null);
                 if (user.AddressCount > Addresscount)
-                    replaceFragment(new AddAddressFragment(), null);
+                    replaceFragment(new AddAddressFragment(null,false), null);
                 else
                     Toast.makeText(getContext(), "You can add only " + user.AddressCount + " address with this plan", Toast.LENGTH_SHORT).show();
             }
@@ -93,11 +93,13 @@ public class AddressFragment extends BaseFragment {
                     if (!response.body().Values.isEmpty()) {
                         Addresscount = response.body().Values.size();
 
-                        addressAdpter = new AddressAdpter(response.body().Values, new AddressAdpter.AddressCallBack() {
+                        addressAdpter = new AddressAdpter(getContext(),response.body().Values, new AddressAdpter.AddressCallBack() {
                             @Override
                             public void getAddress(String name, String Address, int AddressId) {
                                 replaceFragment(new AddressDetailFragment(name, Address, AddressId), null);
                             }
+                        },address -> {
+                            replaceFragment(new AddAddressFragment(address,true), null);
                         });
 
                         recyclerViewAddress.setLayoutManager(new LinearLayoutManager(getContext()));

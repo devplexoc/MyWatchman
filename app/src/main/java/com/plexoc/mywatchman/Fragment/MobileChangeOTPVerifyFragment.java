@@ -1,10 +1,10 @@
 package com.plexoc.mywatchman.Fragment;
 
-
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
@@ -23,6 +23,7 @@ import com.plexoc.mywatchman.Model.User;
 import com.plexoc.mywatchman.R;
 import com.plexoc.mywatchman.Utils.Constants;
 import com.plexoc.mywatchman.Utils.LoadingDialog;
+import com.plexoc.mywatchman.Utils.Prefs;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -31,39 +32,38 @@ import java.util.concurrent.TimeUnit;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 
-public class OTPConfirmFragment extends BaseFragment {
+public class MobileChangeOTPVerifyFragment extends BaseFragment {
 
     private User user;
     private OtpView otp_view;
     private AppCompatTextView textViewResendOTP;
     private AppCompatTextView textViewTimer;
-    private boolean isForgotPassword;
-    /*private TextInputEditText otp_view;
-    private TextInputLayout textinput_otp_view;*/
+    private String newMobile;
 
-    public OTPConfirmFragment(User user, boolean isForgotPassword) {
+    public MobileChangeOTPVerifyFragment(User user, String Mobile) {
         this.user = user;
-        this.isForgotPassword = isForgotPassword;
+        this.newMobile = Mobile;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_otpconfirm, container, false);
+        View view = inflater.inflate(R.layout.fragment_mobile_change_o_t_p_verify, container, false);
 
         AppCompatTextView textview_mobilenumber = view.findViewById(R.id.textview_mobilenumber);
         MaterialButton button_varify = view.findViewById(R.id.button_varify);
-        AppCompatImageView imageview_back = view.findViewById(R.id.imageview_back);
         otp_view = view.findViewById(R.id.otp_view);
         otp_view.requestFocus();
         //textinput_otp_view = view.findViewById(R.id.textinput_otp_view);
 
-        if (user.Mobile != null) {
-            textview_mobilenumber.setText(user.Mobile);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.back);
+        toolbar.setTitle("Verify OTP");
+        toolbar.setNavigationOnClickListener(view1 -> getActivity().onBackPressed());
+
+        if (newMobile != null) {
+            textview_mobilenumber.setText(newMobile);
         }
 
         textViewTimer = view.findViewById(R.id.textview_timer);
@@ -72,19 +72,17 @@ public class OTPConfirmFragment extends BaseFragment {
             ResendOTP();
         });
         startTimer();
+
+
         button_varify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (doValidate()) {
                     if (otp_view.getText().toString().trim().equals(user.Otp)) {
+                        user.Mobile = "+231" + newMobile;
 
-                        if (!isForgotPassword)
-                          //  CallSignupApi();
-                            replaceFragment(new SecurityQuestionFragment(user), null);
-                        else {
-                            replaceFragment(new NewPasswordFragment(user), null);
-                        }
-                        //replaceFragment(new PlansFragment(user), null);
+                        CallUpdateApi();
+
                     } else
                         Toast.makeText(getContext(), "Please Enter Valid OTP", Toast.LENGTH_SHORT).show();
 
@@ -92,14 +90,49 @@ public class OTPConfirmFragment extends BaseFragment {
             }
         });
 
-        imageview_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-            }
-        });
 
         return view;
+    }
+
+    private void CallUpdateApi() {
+        if (!isNetworkConnected()) {
+            Toast.makeText(getContext(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        LoadingDialog.showLoadingDialog(getContext());
+        getApiClient().SignUp(user).enqueue(new Callback<Response<User>>() {
+            @Override
+            public void onResponse(Call<Response<User>> call, retrofit2.Response<Response<User>> response) {
+                if (response.code() == Constants.SuccessCode) {
+                    if (response.body().Item != null) {
+
+                        Prefs.putString(Prefs.USER, new Gson().toJson(response.body().Item));
+                        user = new Gson().fromJson(Prefs.getString(Prefs.USER), User.class);
+
+                        Toast.makeText(getActivity(), "Profile Update Successfully", Toast.LENGTH_SHORT).show();
+                        getActivity().onBackPressed();
+                    } else {
+                        showMessage(response.body().Message);
+                    }
+                } else if (response.code() == Constants.InternalServerError) {
+                    showMessage(Constants.DefaultErrorMessage);
+                } else {
+                    try {
+                        Error error = new Gson().fromJson(response.errorBody().string(), Error.class);
+                        showMessage(error.Message);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                LoadingDialog.cancelLoading();
+            }
+
+            @Override
+            public void onFailure(Call<Response<User>> call, Throwable t) {
+                LoadingDialog.cancelLoading();
+                Log.e("Update Error", t.getLocalizedMessage());
+            }
+        });
     }
 
     private void ResendOTP() {
@@ -108,7 +141,7 @@ public class OTPConfirmFragment extends BaseFragment {
             return;
         }
         LoadingDialog.showLoadingDialog(getContext());
-        getApiClient().ResendOTP(user.Mobile, user.Otp).enqueue(new Callback<Response<User>>() {
+        getApiClient().ResendOTP("+231"+newMobile, user.Otp).enqueue(new Callback<Response<User>>() {
             @Override
             public void onResponse(Call<Response<User>> call, retrofit2.Response<Response<User>> response) {
                 if (response.code() == Constants.SuccessCode) {
@@ -135,51 +168,6 @@ public class OTPConfirmFragment extends BaseFragment {
             @Override
             public void onFailure(Call<Response<User>> call, Throwable t) {
 
-            }
-        });
-    }
-
-    private void CallSignupApi() {
-        if (!isNetworkConnected()) {
-            Toast.makeText(getContext(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        LoadingDialog.showLoadingDialog(getContext());
-        getApiClient().SignUp(user).enqueue(new Callback<Response<User>>() {
-            @Override
-            public void onResponse(Call<Response<User>> call, retrofit2.Response<Response<User>> response) {
-                if (response.code() == Constants.SuccessCode) {
-                    if (response.body().Item != null) {
-
-                        closeKeybord();
-
-                        replaceFragment(new PlansFragment(response.body().Item), null);
-
-                        //replaceFragment(new OTPConfirmFragment(response.body().Item),null);
-
-                        /*Intent intent = new Intent(getActivity(), HomeActivity.class);
-                        startActivity(intent);*/
-                    } else {
-                        showMessage(response.body().Message);
-                    }
-                } else if (response.code() == Constants.InternalServerError) {
-                    showMessage(Constants.DefaultErrorMessage);
-                } else {
-                    try {
-                        Error error = new Gson().fromJson(response.errorBody().string(), Error.class);
-                        showMessage(error.Message);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                LoadingDialog.cancelLoading();
-            }
-
-            @Override
-            public void onFailure(Call<Response<User>> call, Throwable t) {
-                LoadingDialog.cancelLoading();
-                Log.e("Signup Fail", t.getLocalizedMessage());
-                showMessage(Constants.DefaultErrorMessage);
             }
         });
     }
@@ -215,5 +203,6 @@ public class OTPConfirmFragment extends BaseFragment {
 
         return true;
     }
+
 
 }

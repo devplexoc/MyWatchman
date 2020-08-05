@@ -96,4 +96,13 @@ public class User {
 
     @SerializedName("DeviceInfo")
     public String DeviceInfo;
+
+    @SerializedName("ProfilePicture")
+    public String ProfilePicture;
+
+    @SerializedName("SecurityQuestionId")
+    public int SecurityQuestionId;
+
+    @SerializedName("Answer")
+    public String Answer;
 }

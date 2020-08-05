@@ -47,9 +47,11 @@ import retrofit2.Callback;
 public class AddAddressFragment extends BaseFragment implements OnMapReadyCallback {
 
     private Address address;
+    private boolean isEdit;
 
-    public AddAddressFragment() {
-        // Required empty public constructor
+    public AddAddressFragment(Address address, boolean isEdit) {
+        this.address = address;
+        this.isEdit = isEdit;
     }
 
     private Geocoder geocoder;
@@ -62,6 +64,7 @@ public class AddAddressFragment extends BaseFragment implements OnMapReadyCallba
     //String latitude, longtitude;
     private Double latitude, longtitude;
     //String address;
+    private LatLng ny;
 
     private MaterialButton buttonAddAddress;
 
@@ -74,7 +77,8 @@ public class AddAddressFragment extends BaseFragment implements OnMapReadyCallba
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_address, container, false);
 
-        address = new Address();
+        if (!isEdit)
+            address = new Address();
 
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setTitle("Add Address");
@@ -85,6 +89,7 @@ public class AddAddressFragment extends BaseFragment implements OnMapReadyCallba
         //textinput_address = view.findViewById(R.id.textinput_address);
 
         edittext_address_name = view.findViewById(R.id.edittext_address_name);
+        edittext_address_name.setText(address.AddressName);
         //edittext_address = view.findViewById(R.id.edittext_address);
 
         Bundle mapViewBundle = null;
@@ -107,6 +112,8 @@ public class AddAddressFragment extends BaseFragment implements OnMapReadyCallba
 
                    /* GeocodingLocation locaionAddress = new GeocodingLocation();
                     locaionAddress.getAddressFromLocation(myAddress, getContext(), new GeocoderHandler());*/
+                    if (!isEdit)
+                        address.Id = 0;
 
                     address.CustomerId = user.Id;
                     address.Address = myAddress;
@@ -155,8 +162,12 @@ public class AddAddressFragment extends BaseFragment implements OnMapReadyCallba
             public void onResponse(Call<Response<Address>> call, retrofit2.Response<Response<Address>> response) {
                 if (response.code() == Constants.SuccessCode) {
                     if (response.body().Item != null) {
+                        if (!isEdit)
                         Toast.makeText(getContext(), "Address Add Successfully", Toast.LENGTH_SHORT).show();
-                        replaceFragment(new AddressFragment(), null);
+                        else
+                            Toast.makeText(getContext(), "Address Updated Successfully", Toast.LENGTH_SHORT).show();
+
+                        getActivity().onBackPressed();
                     } else {
                         showMessage(response.body().Message);
                     }
@@ -233,8 +244,11 @@ public class AddAddressFragment extends BaseFragment implements OnMapReadyCallba
         uiSettings.setCompassEnabled(true);
         uiSettings.setZoomControlsEnabled(true);
 
+        if (!isEdit)
+            ny = new LatLng(6.2645484, -10.7206074);
+        else
+            ny = new LatLng(Double.parseDouble(address.Latitude), Double.parseDouble(address.Longitude));
 
-        LatLng ny = new LatLng(6.2645484, -10.7206074);
 
         mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override

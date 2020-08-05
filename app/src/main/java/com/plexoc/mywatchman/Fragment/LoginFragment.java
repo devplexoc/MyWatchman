@@ -81,6 +81,8 @@ public class LoginFragment extends BaseFragment {
         textviewSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //replaceFragment(new SecurityQuestionFragment(user), null);
                 replaceFragment(new SignupFragment(), null);
             }
         });
