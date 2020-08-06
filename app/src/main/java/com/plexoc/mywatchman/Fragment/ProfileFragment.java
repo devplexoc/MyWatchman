@@ -386,7 +386,7 @@ public class ProfileFragment extends BaseFragment {
                     closeKeybord();
                     if (response.body().Code == 200) {
                         user.Otp = response.body().Item.Otp;
-                        //Toast.makeText(getContext(), "Your OTP is : " + user.Otp, Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getContext(), "Your OTP is : " + user.Otp, Toast.LENGTH_LONG).show();
                         replaceFragment(new MobileChangeOTPVerifyFragment(user, edittext_mobilenumber.getText().toString().trim()), null);
                     } else {
                         showMessage(response.body().Message);
