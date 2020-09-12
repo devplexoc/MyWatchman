@@ -2,6 +2,7 @@ package com.plexoc.mywatchman.Service;
 
 import com.plexoc.mywatchman.Model.Address;
 import com.plexoc.mywatchman.Model.ChangePassword;
+import com.plexoc.mywatchman.Model.CountyMaster;
 import com.plexoc.mywatchman.Model.EmergencyContact;
 import com.plexoc.mywatchman.Model.ListResponse;
 import com.plexoc.mywatchman.Model.Notifiaction;
@@ -37,6 +38,9 @@ public interface ApiClient {
 
     @GET("customer/LogIn")
     Call<Response<User>> Login(@Query("UserName") String UserName, @Query("password") String password, @Query("DeviceToken") String DeviceToken, @Query("DeviceInfo") String DeviceInfo);
+
+    @GET("countryMaster/GetAllCountryMaster")
+    Call<ListResponse<CountyMaster>> getAllCountry();
 
     @POST("customer/AddCustomerAddress")
     Call<Response<Address>> AddCustomerAddress(@Body Address address);

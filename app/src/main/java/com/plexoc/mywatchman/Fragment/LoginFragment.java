@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 
@@ -14,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -24,7 +27,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.plexoc.mywatchman.Activity.HomeActivity;
 import com.plexoc.mywatchman.BuildConfig;
+import com.plexoc.mywatchman.Model.CountyMaster;
 import com.plexoc.mywatchman.Model.Error;
+import com.plexoc.mywatchman.Model.ListResponse;
 import com.plexoc.mywatchman.Model.Response;
 import com.plexoc.mywatchman.Model.User;
 import com.plexoc.mywatchman.R;
@@ -34,6 +39,8 @@ import com.plexoc.mywatchman.Utils.LoadingDialog;
 import com.plexoc.mywatchman.Utils.Prefs;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,6 +55,10 @@ public class LoginFragment extends BaseFragment {
         // Required empty public constructor
     }
 
+    private ArrayList<String> arrayListSpinnerCountry = new ArrayList<>();
+    private List<CountyMaster> countyMasterList;
+
+    private AppCompatSpinner spinner_countrycode;
     private TextInputLayout textinput_username, textinput_password;
     private TextInputEditText edittext_username, edittext_password;
     private MaterialButton button_login;
@@ -56,6 +67,7 @@ public class LoginFragment extends BaseFragment {
     private RadioButton radiobutton_mobilenumber, radiobutton_username;
     private String LoginUser;
     private String DeviceInfo;
+    private String CountryItem;
 
     private AppCompatTextView textviewSignup, textview_countrycode, textview_username;
 
@@ -74,6 +86,8 @@ public class LoginFragment extends BaseFragment {
 
         edittext_username = view.findViewById(R.id.edittext_username);
         edittext_password = view.findViewById(R.id.edittext_password);
+
+        spinner_countrycode = view.findViewById(R.id.spinner_countrycode);
 
         radioGroup = view.findViewById(R.id.radiogroup);
         radiobutton_mobilenumber = view.findViewById(R.id.radiobutton_mobilenumber);
@@ -95,6 +109,20 @@ public class LoginFragment extends BaseFragment {
 
         DeviceInfo = "Android : OS -> " + Build.VERSION.RELEASE + " , Model -> " + Build.MODEL + " , Brand -> " + Build.MODEL + " , App Version ->" + BuildConfig.VERSION_NAME;
 
+        getCountryList();
+
+        spinner_countrycode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                CountryItem = parent.getItemAtPosition(position).toString();
+                CountryItem = arrayListSpinnerCountry.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
        /* radiobutton_mobilenumber.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,28 +188,32 @@ public class LoginFragment extends BaseFragment {
                     case R.id.radiobutton_mobilenumber:
                         if (radiobutton_mobilenumber.isChecked()) {
                             radiobutton_mobilenumber.setChecked(true);
-                            textview_countrycode.setVisibility(View.VISIBLE);
+                            //textview_countrycode.setVisibility(View.VISIBLE);
+                            spinner_countrycode.setVisibility(View.VISIBLE);
                             textview_username.setText("Mobilenumber");
                             radiobutton_username.setChecked(false);
                             edittext_username.setText("");
                             edittext_username.setFilters(new InputFilter[]{new InputFilter.LengthFilter(9)});
                             edittext_username.setInputType(InputType.TYPE_CLASS_NUMBER);
                         } else {
-                            textview_countrycode.setVisibility(View.GONE);
+                            spinner_countrycode.setVisibility(View.GONE);
+                            //textview_countrycode.setVisibility(View.GONE);
                             textview_username.setText("Username");
                         }
                         break;
                     case R.id.radiobutton_username:
                         if (radiobutton_username.isChecked()) {
                             radiobutton_username.setChecked(true);
-                            textview_countrycode.setVisibility(View.GONE);
+                            //textview_countrycode.setVisibility(View.GONE);
+                            spinner_countrycode.setVisibility(View.GONE);
                             textview_username.setText("Username");
                             radiobutton_mobilenumber.setChecked(false);
                             edittext_username.setText("");
                             edittext_username.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50)});
                             edittext_username.setInputType(InputType.TYPE_CLASS_TEXT);
                         } else {
-                            textview_countrycode.setVisibility(View.VISIBLE);
+                            spinner_countrycode.setVisibility(View.VISIBLE);
+                            //textview_countrycode.setVisibility(View.VISIBLE);
                             textview_username.setText("Mobilenumber");
                         }
                         break;
@@ -202,7 +234,7 @@ public class LoginFragment extends BaseFragment {
                     radioButton = view.findViewById(id);
 
                     if (radioButton.getText().toString().equals("Mobile Number")) {
-                        LoginUser = textview_countrycode.getText().toString().trim() + edittext_username.getText().toString().trim();
+                        LoginUser = CountryItem + edittext_username.getText().toString().trim();
                     } else
                         LoginUser = edittext_username.getText().toString().trim();
 
@@ -295,6 +327,52 @@ public class LoginFragment extends BaseFragment {
         }
 
         return true;
+    }
+
+    private void getCountryList() {
+
+        if (!isNetworkConnected()) {
+            Toast.makeText(getContext(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        LoadingDialog.showLoadingDialog(getContext());
+        getApiClient().getAllCountry().enqueue(new Callback<ListResponse<CountyMaster>>() {
+            @Override
+            public void onResponse(Call<ListResponse<CountyMaster>> call, retrofit2.Response<ListResponse<CountyMaster>> response) {
+                if (response.code() == Constants.SuccessCode) {
+                    if (!response.body().Values.isEmpty()) {
+                        countyMasterList = response.body().Values;
+
+                        if (!arrayListSpinnerCountry.isEmpty())
+                            arrayListSpinnerCountry.clear();
+
+                        for (int i = 0; i < countyMasterList.size(); i++) {
+                            arrayListSpinnerCountry.add("+"+countyMasterList.get(i).CountryCode);
+                        }
+
+                        ArrayAdapter<String> arrayAdapterCountry = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayListSpinnerCountry);
+                        spinner_countrycode.setAdapter(arrayAdapterCountry);
+
+                    }
+                } else if (response.code() == Constants.InternalServerError) {
+                    showMessage(Constants.DefaultErrorMessage);
+                } else {
+                    try {
+                        Error error = new Gson().fromJson(response.errorBody().string(), Error.class);
+                        showMessage(error.Message);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                LoadingDialog.cancelLoading();
+            }
+
+            @Override
+            public void onFailure(Call<ListResponse<CountyMaster>> call, Throwable t) {
+
+            }
+        });
+
     }
 
 }
