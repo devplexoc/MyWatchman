@@ -53,9 +53,9 @@ public class SignupFragment extends BaseFragment {
     private AppCompatSpinner spinner_countrycode;
 
     private TextInputLayout textinput_firstname, textinput_lastname, textinput_email, textinput_mobilenumber,
-            textinput_password, textinput_username;
+            textinput_password, textinput_username,textinput_countrycode;
     private TextInputEditText edittext_firstname, edittext_lastname, edittext_email, edittext_mobilenumber,
-            edittext_password, edittext_username;
+            edittext_password, edittext_username,edittext_countrycode;
     private MaterialButton button_signup;
     private String CountryItem;
 
@@ -77,6 +77,7 @@ public class SignupFragment extends BaseFragment {
         textinput_mobilenumber = view.findViewById(R.id.textinput_mobilenumber);
         textinput_password = view.findViewById(R.id.textinput_password);
         textinput_username = view.findViewById(R.id.textinput_username);
+        textinput_countrycode = view.findViewById(R.id.textinput_countrycode);
 
         spinner_countrycode = view.findViewById(R.id.spinner_countrycode);
 
@@ -86,6 +87,7 @@ public class SignupFragment extends BaseFragment {
         edittext_mobilenumber = view.findViewById(R.id.edittext_mobilenumber);
         edittext_password = view.findViewById(R.id.edittext_password);
         edittext_username = view.findViewById(R.id.edittext_username);
+        edittext_countrycode = view.findViewById(R.id.edittext_countrycode);
 
         button_signup = view.findViewById(R.id.button_signup);
         button_signup.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +101,7 @@ public class SignupFragment extends BaseFragment {
                     user.LastName = edittext_lastname.getText().toString().trim();
                     user.UserName = edittext_username.getText().toString().trim();
                     user.Email = edittext_email.getText().toString().trim();
-                    user.Mobile = CountryItem + edittext_mobilenumber.getText().toString().trim();
+                    user.Mobile = edittext_countrycode.getText().toString().trim() + edittext_mobilenumber.getText().toString().trim();
                     user.Password = edittext_password.getText().toString().trim();
                     user.DeviceToken = Constants.DeviceToken;
                     user.DeviceInfo = "Android : OS -> " + Build.VERSION.RELEASE + " , Model -> " + Build.MODEL + " , Brand -> " + Build.MODEL + " , App Version ->" + BuildConfig.VERSION_NAME;
@@ -111,6 +113,13 @@ public class SignupFragment extends BaseFragment {
             }
         });
 
+        edittext_countrycode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                spinner_countrycode.performClick();
+            }
+        });
+
         getCountryList();
 
         spinner_countrycode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -118,6 +127,12 @@ public class SignupFragment extends BaseFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 CountryItem = parent.getItemAtPosition(position).toString();
                 CountryItem = arrayListSpinnerCountry.get(position);
+
+                for (int i = 0; i < countyMasterList.size(); i++) {
+                    if (countyMasterList.get(i).Name.equals(CountryItem)) {
+                        edittext_countrycode.setText("+" + countyMasterList.get(i).CountryCode);
+                    }
+                }
             }
 
             @Override
@@ -332,7 +347,7 @@ public class SignupFragment extends BaseFragment {
                             arrayListSpinnerCountry.clear();
 
                         for (int i = 0; i < countyMasterList.size(); i++) {
-                            arrayListSpinnerCountry.add("+"+countyMasterList.get(i).CountryCode);
+                            arrayListSpinnerCountry.add(countyMasterList.get(i).Name);
                         }
 
                         ArrayAdapter<String> arrayAdapterCountry = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayListSpinnerCountry);
