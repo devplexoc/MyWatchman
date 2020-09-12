@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -25,7 +28,9 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.plexoc.mywatchman.Model.CountyMaster;
 import com.plexoc.mywatchman.Model.Error;
+import com.plexoc.mywatchman.Model.ListResponse;
 import com.plexoc.mywatchman.Model.Response;
 import com.plexoc.mywatchman.Model.SecurityQuestion;
 import com.plexoc.mywatchman.Model.User;
@@ -37,6 +42,8 @@ import com.plexoc.mywatchman.Utils.Prefs;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -53,6 +60,11 @@ public class ProfileFragment extends BaseFragment {
     public ProfileFragment() {
         // Required empty public constructor
     }
+
+    private ArrayList<String> arrayListSpinnerCountry = new ArrayList<>();
+    private List<CountyMaster> countyMasterList;
+    private String CountryItem;
+    private AppCompatSpinner spinner_countrycode;
 
     private Toolbar toolbar;
     private TextInputLayout textinput_profile_firstname, textinput_lastname, textinput_email, textinput_mobilenumber,
@@ -83,6 +95,8 @@ public class ProfileFragment extends BaseFragment {
         textinput_mobilenumber = view.findViewById(R.id.textinput_mobilenumber);
         textinput_password = view.findViewById(R.id.textinput_password);
         textinput_username = view.findViewById(R.id.textinput_username);
+
+        spinner_countrycode = view.findViewById(R.id.spinner_countrycode);
 
         edittext_profile_firstname = view.findViewById(R.id.edittext_profile_firstname);
         edittext_lastname = view.findViewById(R.id.edittext_lastname);
@@ -136,6 +150,22 @@ public class ProfileFragment extends BaseFragment {
                     .single()
                     .start();
         });
+
+        getCountryList();
+
+        spinner_countrycode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                CountryItem = parent.getItemAtPosition(position).toString();
+                CountryItem = arrayListSpinnerCountry.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         return view;
     }
 
@@ -483,6 +513,52 @@ public class ProfileFragment extends BaseFragment {
             textview_username.setVisibility(View.GONE);
             textview_email.setVisibility(View.GONE);
         }
+
+    }
+
+    private void getCountryList() {
+
+        if (!isNetworkConnected()) {
+            Toast.makeText(getContext(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        LoadingDialog.showLoadingDialog(getContext());
+        getApiClient().getAllCountry().enqueue(new Callback<ListResponse<CountyMaster>>() {
+            @Override
+            public void onResponse(Call<ListResponse<CountyMaster>> call, retrofit2.Response<ListResponse<CountyMaster>> response) {
+                if (response.code() == Constants.SuccessCode) {
+                    if (!response.body().Values.isEmpty()) {
+                        countyMasterList = response.body().Values;
+
+                        if (!arrayListSpinnerCountry.isEmpty())
+                            arrayListSpinnerCountry.clear();
+
+                        for (int i = 0; i < countyMasterList.size(); i++) {
+                            arrayListSpinnerCountry.add("+"+countyMasterList.get(i).CountryCode);
+                        }
+
+                        ArrayAdapter<String> arrayAdapterCountry = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayListSpinnerCountry);
+                        spinner_countrycode.setAdapter(arrayAdapterCountry);
+
+                    }
+                } else if (response.code() == Constants.InternalServerError) {
+                    showMessage(Constants.DefaultErrorMessage);
+                } else {
+                    try {
+                        Error error = new Gson().fromJson(response.errorBody().string(), Error.class);
+                        showMessage(error.Message);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                LoadingDialog.cancelLoading();
+            }
+
+            @Override
+            public void onFailure(Call<ListResponse<CountyMaster>> call, Throwable t) {
+
+            }
+        });
 
     }
 

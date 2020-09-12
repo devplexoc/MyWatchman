@@ -2,6 +2,7 @@ package com.plexoc.mywatchman.Fragment;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import android.text.InputFilter;
@@ -10,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -18,7 +21,9 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.plexoc.mywatchman.Model.CountyMaster;
 import com.plexoc.mywatchman.Model.Error;
+import com.plexoc.mywatchman.Model.ListResponse;
 import com.plexoc.mywatchman.Model.Response;
 import com.plexoc.mywatchman.Model.User;
 import com.plexoc.mywatchman.R;
@@ -26,6 +31,8 @@ import com.plexoc.mywatchman.Utils.Constants;
 import com.plexoc.mywatchman.Utils.LoadingDialog;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +44,10 @@ public class ForgotPasswordFragment extends BaseFragment {
     public ForgotPasswordFragment() {
     }
 
+    private ArrayList<String> arrayListSpinnerCountry = new ArrayList<>();
+    private List<CountyMaster> countyMasterList;
+    private String CountryItem;
+    private AppCompatSpinner spinner_countrycode;
 
     private TextInputLayout inputlayout_forgotpassword_email;
     private TextInputEditText edittext_forgotpassword_email;
@@ -63,6 +74,8 @@ public class ForgotPasswordFragment extends BaseFragment {
         textViewthree = view.findViewById(R.id.textview_three);
         textview_forgot_password.setVisibility(View.GONE);
 
+        spinner_countrycode = view.findViewById(R.id.spinner_countrycode);
+
         radioGroup = view.findViewById(R.id.radiogroup);
         radiobutton_mobilenumber = view.findViewById(R.id.radiobutton_mobilenumber);
         radiobutton_email = view.findViewById(R.id.radiobutton_email);
@@ -74,7 +87,8 @@ public class ForgotPasswordFragment extends BaseFragment {
                     case R.id.radiobutton_mobilenumber:
                         if (radiobutton_mobilenumber.isChecked()) {
                             radiobutton_mobilenumber.setChecked(true);
-                            textview_countrycode.setVisibility(View.VISIBLE);
+                            //textview_countrycode.setVisibility(View.VISIBLE);
+                            spinner_countrycode.setVisibility(View.VISIBLE);
                             textview_username.setText("Mobilenumber");
                             radiobutton_email.setChecked(false);
                             inputlayout_forgotpassword_email.setError(" ");
@@ -85,14 +99,16 @@ public class ForgotPasswordFragment extends BaseFragment {
                             edittext_forgotpassword_email.setFilters(new InputFilter[]{new InputFilter.LengthFilter(9)});
                             edittext_forgotpassword_email.setInputType(InputType.TYPE_CLASS_NUMBER);
                         } else {
-                            textview_countrycode.setVisibility(View.GONE);
+                            spinner_countrycode.setVisibility(View.GONE);
+                            //textview_countrycode.setVisibility(View.GONE);
                             textview_username.setText("Username");
                         }
                         break;
                     case R.id.radiobutton_email:
                         if (radiobutton_email.isChecked()) {
                             radiobutton_email.setChecked(true);
-                            textview_countrycode.setVisibility(View.GONE);
+                            //textview_countrycode.setVisibility(View.GONE);
+                            spinner_countrycode.setVisibility(View.GONE);
                             textview_username.setText("Email");
                             radiobutton_mobilenumber.setChecked(false);
                             inputlayout_forgotpassword_email.setError(" ");
@@ -103,7 +119,8 @@ public class ForgotPasswordFragment extends BaseFragment {
                             edittext_forgotpassword_email.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50)});
                             edittext_forgotpassword_email.setInputType(InputType.TYPE_CLASS_TEXT);
                         } else {
-                            textview_countrycode.setVisibility(View.VISIBLE);
+                            spinner_countrycode.setVisibility(View.VISIBLE);
+                            //textview_countrycode.setVisibility(View.VISIBLE);
                             textview_username.setText("Mobilenumber");
                         }
                         break;
@@ -132,6 +149,21 @@ public class ForgotPasswordFragment extends BaseFragment {
                     }
 
                 }
+            }
+        });
+
+        getCountryList();
+
+        spinner_countrycode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                CountryItem = parent.getItemAtPosition(position).toString();
+                CountryItem = arrayListSpinnerCountry.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
@@ -192,7 +224,7 @@ public class ForgotPasswordFragment extends BaseFragment {
                 if (response.isSuccessful()) {
                     closeKeybord();
                     if (response.body().Code == 200) {
-                        user.Mobile = "+231" + edittext_forgotpassword_email.getText().toString();
+                        user.Mobile = CountryItem + edittext_forgotpassword_email.getText().toString();
                         user.CustomerId = response.body().Item.CustomerId;
                         user.Otp = response.body().Item.Otp;
                         //Toast.makeText(getContext(), "Your OTP is : " + user.Otp, Toast.LENGTH_LONG).show();
@@ -288,6 +320,52 @@ public class ForgotPasswordFragment extends BaseFragment {
         }
 
         return true;
+    }
+
+    private void getCountryList() {
+
+        if (!isNetworkConnected()) {
+            Toast.makeText(getContext(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        LoadingDialog.showLoadingDialog(getContext());
+        getApiClient().getAllCountry().enqueue(new Callback<ListResponse<CountyMaster>>() {
+            @Override
+            public void onResponse(Call<ListResponse<CountyMaster>> call, retrofit2.Response<ListResponse<CountyMaster>> response) {
+                if (response.code() == Constants.SuccessCode) {
+                    if (!response.body().Values.isEmpty()) {
+                        countyMasterList = response.body().Values;
+
+                        if (!arrayListSpinnerCountry.isEmpty())
+                            arrayListSpinnerCountry.clear();
+
+                        for (int i = 0; i < countyMasterList.size(); i++) {
+                            arrayListSpinnerCountry.add("+"+countyMasterList.get(i).CountryCode);
+                        }
+
+                        ArrayAdapter<String> arrayAdapterCountry = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayListSpinnerCountry);
+                        spinner_countrycode.setAdapter(arrayAdapterCountry);
+
+                    }
+                } else if (response.code() == Constants.InternalServerError) {
+                    showMessage(Constants.DefaultErrorMessage);
+                } else {
+                    try {
+                        Error error = new Gson().fromJson(response.errorBody().string(), Error.class);
+                        showMessage(error.Message);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                LoadingDialog.cancelLoading();
+            }
+
+            @Override
+            public void onFailure(Call<ListResponse<CountyMaster>> call, Throwable t) {
+
+            }
+        });
+
     }
 
 }

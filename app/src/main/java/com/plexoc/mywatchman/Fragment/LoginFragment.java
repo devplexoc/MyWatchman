@@ -57,17 +57,18 @@ public class LoginFragment extends BaseFragment {
 
     private ArrayList<String> arrayListSpinnerCountry = new ArrayList<>();
     private List<CountyMaster> countyMasterList;
-
+    private String CountryItem;
     private AppCompatSpinner spinner_countrycode;
-    private TextInputLayout textinput_username, textinput_password;
-    private TextInputEditText edittext_username, edittext_password;
+
+    private TextInputLayout textinput_username, textinput_password,textinput_countrycode;
+    private TextInputEditText edittext_username, edittext_password,edittext_countrycode;
     private MaterialButton button_login;
     private RadioGroup radioGroup;
     private RadioButton radioButton;
     private RadioButton radiobutton_mobilenumber, radiobutton_username;
     private String LoginUser;
     private String DeviceInfo;
-    private String CountryItem;
+
 
     private AppCompatTextView textviewSignup, textview_countrycode, textview_username;
 
@@ -83,9 +84,11 @@ public class LoginFragment extends BaseFragment {
 
         textinput_username = view.findViewById(R.id.textinput_username);
         textinput_password = view.findViewById(R.id.textinput_password);
+        textinput_countrycode = view.findViewById(R.id.textinput_countrycode);
 
         edittext_username = view.findViewById(R.id.edittext_username);
         edittext_password = view.findViewById(R.id.edittext_password);
+        edittext_countrycode = view.findViewById(R.id.edittext_countrycode);
 
         spinner_countrycode = view.findViewById(R.id.spinner_countrycode);
 
@@ -109,6 +112,13 @@ public class LoginFragment extends BaseFragment {
 
         DeviceInfo = "Android : OS -> " + Build.VERSION.RELEASE + " , Model -> " + Build.MODEL + " , Brand -> " + Build.MODEL + " , App Version ->" + BuildConfig.VERSION_NAME;
 
+        edittext_countrycode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                spinner_countrycode.performClick();
+            }
+        });
+
         getCountryList();
 
         spinner_countrycode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -116,6 +126,13 @@ public class LoginFragment extends BaseFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 CountryItem = parent.getItemAtPosition(position).toString();
                 CountryItem = arrayListSpinnerCountry.get(position);
+                //textview_countrycode.setText(CountryItem);
+
+                for (int i = 0; i < countyMasterList.size(); i++) {
+                    if (countyMasterList.get(i).Name.equals(CountryItem)) {
+                        edittext_countrycode.setText("+" + countyMasterList.get(i).CountryCode);
+                    }
+                }
             }
 
             @Override
@@ -189,15 +206,17 @@ public class LoginFragment extends BaseFragment {
                         if (radiobutton_mobilenumber.isChecked()) {
                             radiobutton_mobilenumber.setChecked(true);
                             //textview_countrycode.setVisibility(View.VISIBLE);
-                            spinner_countrycode.setVisibility(View.VISIBLE);
+                            //spinner_countrycode.setVisibility(View.VISIBLE);
+                            textinput_countrycode.setVisibility(View.VISIBLE);
                             textview_username.setText("Mobilenumber");
                             radiobutton_username.setChecked(false);
                             edittext_username.setText("");
                             edittext_username.setFilters(new InputFilter[]{new InputFilter.LengthFilter(9)});
                             edittext_username.setInputType(InputType.TYPE_CLASS_NUMBER);
                         } else {
-                            spinner_countrycode.setVisibility(View.GONE);
+                            //spinner_countrycode.setVisibility(View.GONE);
                             //textview_countrycode.setVisibility(View.GONE);
+                            textinput_countrycode.setVisibility(View.VISIBLE);
                             textview_username.setText("Username");
                         }
                         break;
@@ -205,14 +224,16 @@ public class LoginFragment extends BaseFragment {
                         if (radiobutton_username.isChecked()) {
                             radiobutton_username.setChecked(true);
                             //textview_countrycode.setVisibility(View.GONE);
-                            spinner_countrycode.setVisibility(View.GONE);
+                            //spinner_countrycode.setVisibility(View.GONE);
+                            textinput_countrycode.setVisibility(View.GONE);
                             textview_username.setText("Username");
                             radiobutton_mobilenumber.setChecked(false);
                             edittext_username.setText("");
                             edittext_username.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50)});
                             edittext_username.setInputType(InputType.TYPE_CLASS_TEXT);
                         } else {
-                            spinner_countrycode.setVisibility(View.VISIBLE);
+                            //spinner_countrycode.setVisibility(View.VISIBLE);
+                            textinput_countrycode.setVisibility(View.VISIBLE);
                             //textview_countrycode.setVisibility(View.VISIBLE);
                             textview_username.setText("Mobilenumber");
                         }
@@ -347,7 +368,7 @@ public class LoginFragment extends BaseFragment {
                             arrayListSpinnerCountry.clear();
 
                         for (int i = 0; i < countyMasterList.size(); i++) {
-                            arrayListSpinnerCountry.add("+"+countyMasterList.get(i).CountryCode);
+                            arrayListSpinnerCountry.add(countyMasterList.get(i).Name);
                         }
 
                         ArrayAdapter<String> arrayAdapterCountry = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayListSpinnerCountry);
