@@ -166,7 +166,7 @@ public class SignupFragment extends BaseFragment {
                     closeKeybord();
                     if (response.body().Code == 200) {
                         user.Otp = response.body().Item.Otp;
-                        //Toast.makeText(getContext(), "Your OTP is : " + user.Otp, Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getContext(), "Your OTP is : " + user.Otp, Toast.LENGTH_LONG).show();
                         replaceFragment(new OTPConfirmFragment(user,false), null);
                     } else {
                         showMessage(response.body().Message);

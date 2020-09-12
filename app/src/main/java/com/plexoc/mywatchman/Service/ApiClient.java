@@ -118,6 +118,10 @@ public interface ApiClient {
     @GET("sOSType/SOSTypeAll")
     Call<ListResponse<SosType>> getSOSType(@Query("Offset") int Offset, @Query("Limit") int Limit);
 
+    @GET("sOSType/GetSOSCountByCustomerId")
+    Call<ListResponse<SosType>> getSOSCountBuCustomerId(@Query("CustomerId") int CustomerId);
+
+
     @GET("plan/GetSOSById/{SOSId}")
     Call<Response<RaisedSOSUser>> getSOS(@Path("SOSId") int SOSId);
 

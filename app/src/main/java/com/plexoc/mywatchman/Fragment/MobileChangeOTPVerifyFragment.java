@@ -1,7 +1,9 @@
 package com.plexoc.mywatchman.Fragment;
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
@@ -14,9 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.phone.SmsRetriever;
+import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 import com.mukesh.OtpView;
+import com.plexoc.mywatchman.Interface.OTPReceiveListener;
 import com.plexoc.mywatchman.Model.Error;
 import com.plexoc.mywatchman.Model.Response;
 import com.plexoc.mywatchman.Model.User;
@@ -24,6 +32,7 @@ import com.plexoc.mywatchman.R;
 import com.plexoc.mywatchman.Utils.Constants;
 import com.plexoc.mywatchman.Utils.LoadingDialog;
 import com.plexoc.mywatchman.Utils.Prefs;
+import com.plexoc.mywatchman.receiver.MySMSBroadcastReceiver;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -33,13 +42,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 
-public class MobileChangeOTPVerifyFragment extends BaseFragment {
+public class MobileChangeOTPVerifyFragment extends BaseFragment implements OTPReceiveListener {
 
     private User user;
     private OtpView otp_view;
     private AppCompatTextView textViewResendOTP;
     private AppCompatTextView textViewTimer;
     private String newMobile;
+    private MySMSBroadcastReceiver mSmsBroadcastReceive;
 
     public MobileChangeOTPVerifyFragment(User user, String Mobile) {
         this.user = user;
@@ -141,7 +151,7 @@ public class MobileChangeOTPVerifyFragment extends BaseFragment {
             return;
         }
         LoadingDialog.showLoadingDialog(getContext());
-        getApiClient().ResendOTP("+231"+newMobile, user.Otp).enqueue(new Callback<Response<User>>() {
+        getApiClient().ResendOTP("+231" + newMobile, user.Otp).enqueue(new Callback<Response<User>>() {
             @Override
             public void onResponse(Call<Response<User>> call, retrofit2.Response<Response<User>> response) {
                 if (response.code() == Constants.SuccessCode) {
@@ -204,5 +214,66 @@ public class MobileChangeOTPVerifyFragment extends BaseFragment {
         return true;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        regReceiver();
+    }
 
+    private void regReceiver() {
+        startSmsListener();
+        mSmsBroadcastReceive = new MySMSBroadcastReceiver();
+        mSmsBroadcastReceive.initOtpReceiveListener(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(SmsRetriever.SMS_RETRIEVED_ACTION);
+        getActivity().getApplicationContext().registerReceiver(mSmsBroadcastReceive, intentFilter);
+    }
+
+    private void startSmsListener() {
+        SmsRetrieverClient client = SmsRetriever.getClient(getContext()  /* context */);
+        Task<Void> task = client.startSmsRetriever();
+        task.addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // Successfully started retriever, expect broadcast intent
+                // ...
+            }
+        });
+
+        task.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Failed to start retriever, inspect Exception for more details
+                // ...
+            }
+        });
+    }
+
+    @Override
+    public void onOTPReceived(String otp) {
+        String[] OTP = otp.split(" ");
+        try {
+            otp_view.setText(OTP[1]);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void onOTPTimeOut() {
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        try {
+            if (mSmsBroadcastReceive != null) {
+                getActivity().unregisterReceiver(mSmsBroadcastReceive);
+            }
+        } catch (Exception e) {
+
+        }
+    }
 }

@@ -28,6 +28,7 @@ import com.plexoc.mywatchman.Model.Error;
 import com.plexoc.mywatchman.Model.Response;
 import com.plexoc.mywatchman.Model.User;
 import com.plexoc.mywatchman.R;
+import com.plexoc.mywatchman.Utils.AppSignatureHelper;
 import com.plexoc.mywatchman.Utils.Constants;
 import com.plexoc.mywatchman.Utils.LoadingDialog;
 import com.plexoc.mywatchman.Utils.Prefs;
@@ -77,6 +78,11 @@ public class LoginFragment extends BaseFragment {
         radioGroup = view.findViewById(R.id.radiogroup);
         radiobutton_mobilenumber = view.findViewById(R.id.radiobutton_mobilenumber);
         radiobutton_username = view.findViewById(R.id.radiobutton_username);
+
+        AppSignatureHelper appSignatureHelper = new AppSignatureHelper(getContext());
+        //edittext_username.setText(appSignatureHelper.getAppSignatures().get(0));
+        //Toast.makeText(getContext(), appSignatureHelper.getAppSignatures().get(0), Toast.LENGTH_SHORT).show();
+        Log.v("SHA_KEY", appSignatureHelper.getAppSignatures().get(0));
 
         textviewSignup.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,8 +1,10 @@
 package com.plexoc.mywatchman.Fragment;
 
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
@@ -14,15 +16,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.phone.SmsRetriever;
+import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 import com.mukesh.OtpView;
+import com.plexoc.mywatchman.Interface.OTPReceiveListener;
 import com.plexoc.mywatchman.Model.Error;
 import com.plexoc.mywatchman.Model.Response;
 import com.plexoc.mywatchman.Model.User;
 import com.plexoc.mywatchman.R;
 import com.plexoc.mywatchman.Utils.Constants;
 import com.plexoc.mywatchman.Utils.LoadingDialog;
+import com.plexoc.mywatchman.receiver.MySMSBroadcastReceiver;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -35,13 +44,14 @@ import retrofit2.Callback;
  * A simple {@link Fragment} subclass.
  */
 
-public class OTPConfirmFragment extends BaseFragment {
+public class OTPConfirmFragment extends BaseFragment implements OTPReceiveListener {
 
     private User user;
     private OtpView otp_view;
     private AppCompatTextView textViewResendOTP;
     private AppCompatTextView textViewTimer;
     private boolean isForgotPassword;
+    private MySMSBroadcastReceiver mSmsBroadcastReceive;
     /*private TextInputEditText otp_view;
     private TextInputLayout textinput_otp_view;*/
 
@@ -79,7 +89,7 @@ public class OTPConfirmFragment extends BaseFragment {
                     if (otp_view.getText().toString().trim().equals(user.Otp)) {
 
                         if (!isForgotPassword)
-                          //  CallSignupApi();
+                            //  CallSignupApi();
                             replaceFragment(new SecurityQuestionFragment(user), null);
                         else {
                             replaceFragment(new NewPasswordFragment(user), null);
@@ -116,7 +126,7 @@ public class OTPConfirmFragment extends BaseFragment {
                         textViewResendOTP.setVisibility(View.INVISIBLE);
                         textViewTimer.setVisibility(View.VISIBLE);
                         startTimer();
-                        Toast.makeText(getContext(), "Resend Otp Successfully", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "Resend Otp Successfully", Toast.LENGTH_SHORT).show();
                     } else
                         showMessage(response.body().Message);
                 } else if (response.code() == Constants.InternalServerError) {
@@ -216,4 +226,67 @@ public class OTPConfirmFragment extends BaseFragment {
         return true;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        regReceiver();
+    }
+
+    private void regReceiver() {
+        startSmsListener();
+        mSmsBroadcastReceive = new MySMSBroadcastReceiver();
+        mSmsBroadcastReceive.initOtpReceiveListener(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(SmsRetriever.SMS_RETRIEVED_ACTION);
+        getActivity().getApplicationContext().registerReceiver(mSmsBroadcastReceive, intentFilter);
+    }
+
+    private void startSmsListener() {
+        SmsRetrieverClient client = SmsRetriever.getClient(getContext()  /* context */);
+        Task<Void> task = client.startSmsRetriever();
+        task.addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // Successfully started retriever, expect broadcast intent
+                // ...
+            }
+        });
+
+        task.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Failed to start retriever, inspect Exception for more details
+                // ...
+            }
+        });
+    }
+
+    @Override
+    public void onOTPReceived(String otp) {
+        String[] OTP = otp.split(" ");
+        try {
+            otp_view.setText(OTP[1]);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+       // Toast.makeText(getContext(), "OTP:-" + OTP[1], Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onOTPTimeOut() {
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        try {
+            if (mSmsBroadcastReceive != null) {
+                getActivity().unregisterReceiver(mSmsBroadcastReceive);
+            }
+        } catch (Exception e) {
+
+        }
+    }
 }

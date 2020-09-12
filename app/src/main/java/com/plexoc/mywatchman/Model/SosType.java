@@ -12,6 +12,9 @@ public class SosType {
     @SerializedName("CreatedBy")
     public int CreatedBy;
 
+    @SerializedName("SOSCount")
+    public int SOSCount;
+
     @SerializedName("CreatedDate")
     public String CreatedDate;
 
