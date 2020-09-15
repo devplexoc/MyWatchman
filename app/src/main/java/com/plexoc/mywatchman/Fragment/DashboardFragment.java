@@ -6,11 +6,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -28,8 +31,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
@@ -74,6 +85,7 @@ public class DashboardFragment extends BaseFragment {
     private MaterialButton btn_view, btn_view_ongoingsos;
     private RaisedSOSUser raisedSOSUser;
     private String Lat, Long;
+    private LocationRequest locationRequest;
 
     private int sosTypeId;
     private ArrayList<String> arrayListSpinner = new ArrayList<>();
@@ -149,9 +161,10 @@ public class DashboardFragment extends BaseFragment {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getActivity()));
         locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
 
-       /* locationRequest = LocationRequest.create();
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(20 * 1000);*/
 
         constraint_layout_one.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,11 +177,12 @@ public class DashboardFragment extends BaseFragment {
                                 Log.e("LocationPermission", "Granted");
 
                                 if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                                    showLocationDialog();
+                                    locationSetting();
                                 } else {
                                     getLastLocation();
                                     //mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
                                 }
+
 
                                 //getActivity().startActivity(new Intent(getContext(), PaymentActivity.class));
 
@@ -728,6 +742,45 @@ public class DashboardFragment extends BaseFragment {
             e.printStackTrace();
         }
     }
+
+
+    private void locationSetting() {
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest);
+        SettingsClient client = LocationServices.getSettingsClient(getActivity());
+        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+
+        task.addOnSuccessListener(getActivity(), (OnSuccessListener<LocationSettingsResponse>) locationSettingsResponse -> {
+            // All location settings are satisfied. The client can initialize
+            // location requests here.
+            // ...
+             getLastLocation();
+
+
+        });
+
+        task.addOnFailureListener(getActivity(), new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (e instanceof ResolvableApiException) {
+                    // Location settings are not satisfied, but this can be fixed
+                    // by showing the user a dialog.
+                    try {
+                        // Show the dialog by calling startResolutionForResult(),
+                        // and check the result in onActivityResult().
+                        ResolvableApiException resolvable = (ResolvableApiException) e;
+                        //resolvable.startResolutionForResult(getContext(), 1000);
+                        startIntentSenderForResult(resolvable.getResolution().getIntentSender(), PERMISSION_ID, null, 0, 0, 0, null);
+                    } catch (IntentSender.SendIntentException sendEx) {
+                        // Ignore the error.
+                    }
+                }
+            }
+        });
+
+    }
+
+
 
     @Override
     public void onResume() {

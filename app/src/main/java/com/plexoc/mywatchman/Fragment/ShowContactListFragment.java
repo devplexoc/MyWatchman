@@ -37,7 +37,6 @@ import static com.plexoc.mywatchman.Fragment.AddEmergencyContactFragment.Request
  */
 public class ShowContactListFragment extends BaseFragment {
 
-
     public ShowContactListFragment() {
         // Required empty public constructor
     }

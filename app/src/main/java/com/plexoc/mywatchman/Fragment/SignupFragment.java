@@ -204,7 +204,7 @@ public class SignupFragment extends BaseFragment {
             return;
         }
         LoadingDialog.showLoadingDialog(getContext());
-        getApiClient().Checkuser("+231" + edittext_mobilenumber.getText().toString().trim(),
+        getApiClient().Checkuser(edittext_countrycode.getText().toString() + edittext_mobilenumber.getText().toString().trim(),
                 edittext_username.getText().toString().trim(),
                 edittext_email.getText().toString().trim()).enqueue(new Callback<Response<User>>() {
             @Override

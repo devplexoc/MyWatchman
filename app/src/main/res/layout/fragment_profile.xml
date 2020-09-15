@@ -253,7 +253,6 @@
                         android:layout_height="wrap_content"
                         android:enabled="true"
                         android:fontFamily="@font/work_sans"
-                        android:maxLength="15"
                         android:singleLine="true" />
 
                 </com.google.android.material.textfield.TextInputLayout>

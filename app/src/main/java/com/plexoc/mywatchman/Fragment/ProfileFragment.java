@@ -65,6 +65,7 @@ public class ProfileFragment extends BaseFragment {
     private ArrayList<String> arrayListSpinnerCountry = new ArrayList<>();
     private List<CountyMaster> countyMasterList;
     private String CountryItem;
+    private String CountryCode;
     private AppCompatSpinner spinner_countrycode;
 
     private Toolbar toolbar;
@@ -410,7 +411,8 @@ public class ProfileFragment extends BaseFragment {
             return;
         }
         LoadingDialog.showLoadingDialog(getContext());
-        getApiClient().Checkuser("+231" + edittext_mobilenumber.getText().toString().trim(),
+        getApiClient().Checkuser(edittext_countrycode.getText().toString()
+                        + edittext_mobilenumber.getText().toString().trim(),
                 null,
                 null).enqueue(new Callback<Response<User>>() {
             @Override
@@ -420,7 +422,7 @@ public class ProfileFragment extends BaseFragment {
                     if (response.body().Code == 200) {
                         user.Otp = response.body().Item.Otp;
                         // Toast.makeText(getContext(), "Your OTP is : " + user.Otp, Toast.LENGTH_LONG).show();
-                        replaceFragment(new MobileChangeOTPVerifyFragment(user, edittext_mobilenumber.getText().toString().trim()), null);
+                        replaceFragment(new MobileChangeOTPVerifyFragment(user, CountryCode, edittext_mobilenumber.getText().toString().trim()), null);
                     } else {
                         showMessage(response.body().Message);
                     }
@@ -533,9 +535,10 @@ public class ProfileFragment extends BaseFragment {
                         for (int i = 0; i < countyMasterList.size(); i++) {
                             if (user.CountryId == countyMasterList.get(i).Id) {
                                 edittext_countrycode.setText("+" + countyMasterList.get(i).CountryCode);
+                                CountryCode = edittext_countrycode.getText().toString();
                                 if (user.Mobile != null) {
-                                    if (user.Mobile.startsWith(Pattern.quote("\\+"+countyMasterList.get(i).CountryCode))) {
-                                        user.Mobile = user.Mobile.replaceFirst(Pattern.quote("\\+"+countyMasterList.get(i).CountryCode), "");
+                                    if (user.Mobile.startsWith(CountryCode)) {
+                                        user.Mobile = user.Mobile.replaceFirst(Pattern.quote("+") + countyMasterList.get(i).CountryCode, "");
                                     }
                                     edittext_mobilenumber.setText(user.Mobile);
                                 }

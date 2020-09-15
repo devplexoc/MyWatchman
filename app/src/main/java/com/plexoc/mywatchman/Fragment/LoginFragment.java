@@ -211,7 +211,7 @@ public class LoginFragment extends BaseFragment {
                             textview_username.setText("Mobilenumber");
                             radiobutton_username.setChecked(false);
                             edittext_username.setText("");
-                            edittext_username.setFilters(new InputFilter[]{new InputFilter.LengthFilter(9)});
+                            edittext_username.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50)});
                             edittext_username.setInputType(InputType.TYPE_CLASS_NUMBER);
                         } else {
                             //spinner_countrycode.setVisibility(View.GONE);
@@ -255,7 +255,7 @@ public class LoginFragment extends BaseFragment {
                     radioButton = view.findViewById(id);
 
                     if (radioButton.getText().toString().equals("Mobile Number")) {
-                        LoginUser = CountryItem + edittext_username.getText().toString().trim();
+                        LoginUser = edittext_countrycode.getText().toString().trim() + edittext_username.getText().toString().trim();
                     } else
                         LoginUser = edittext_username.getText().toString().trim();
 

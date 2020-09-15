@@ -49,10 +49,12 @@ public class MobileChangeOTPVerifyFragment extends BaseFragment implements OTPRe
     private AppCompatTextView textViewResendOTP;
     private AppCompatTextView textViewTimer;
     private String newMobile;
+    private String countryCode;
     private MySMSBroadcastReceiver mSmsBroadcastReceive;
 
-    public MobileChangeOTPVerifyFragment(User user, String Mobile) {
+    public MobileChangeOTPVerifyFragment(User user, String CountryCode, String Mobile) {
         this.user = user;
+        this.countryCode = CountryCode;
         this.newMobile = Mobile;
     }
 
@@ -89,7 +91,7 @@ public class MobileChangeOTPVerifyFragment extends BaseFragment implements OTPRe
             public void onClick(View v) {
                 if (doValidate()) {
                     if (otp_view.getText().toString().trim().equals(user.Otp)) {
-                        user.Mobile = "+231" + newMobile;
+                        user.Mobile = countryCode + newMobile;
 
                         CallUpdateApi();
 
