@@ -215,13 +215,36 @@
                     app:layout_constraintTop_toTopOf="@+id/textinput_mobilenumber"  />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textinput_countrycode"
+                    style="@style/CustomEditText"
+                    android:layout_width="70dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="10dp"
+                    android:visibility="visible"
+                    android:textColorHint="@color/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="@+id/textinput_mobilenumber"
+                    app:layout_constraintEnd_toStartOf="@+id/textinput_mobilenumber"
+                    app:layout_constraintStart_toStartOf="@+id/textview_mobilenumber"
+                    app:layout_constraintTop_toTopOf="@+id/textinput_mobilenumber">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edittext_countrycode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/work_sans"
+                        android:singleLine="true"
+                        android:focusable="false"
+                        android:textColor="@color/colorBlack" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textinput_mobilenumber"
                     style="@style/CustomEditTextprofile"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     app:layout_constraintEnd_toEndOf="@+id/textview_profile_firstname"
-                    app:layout_constraintStart_toEndOf="@+id/spinner_countrycode"
+                    app:layout_constraintStart_toEndOf="@+id/textinput_countrycode"
                     app:layout_constraintTop_toBottomOf="@+id/textview_mobilenumber">
 
                     <com.google.android.material.textfield.TextInputEditText

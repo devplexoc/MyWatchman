@@ -13,6 +13,9 @@ public class User {
     @SerializedName("UserName")
     public String UserName;
 
+    @SerializedName("CountryId")
+    public int CountryId;
+
     @SerializedName("IsCancel")
     public boolean IsCancel;
 
@@ -45,6 +48,7 @@ public class User {
 
     @SerializedName("CreatedBy")
     public int CreatedBy;
+
 
     @SerializedName("CreatedDate")
     public String CreatedDate;

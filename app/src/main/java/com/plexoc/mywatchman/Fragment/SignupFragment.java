@@ -130,6 +130,7 @@ public class SignupFragment extends BaseFragment {
 
                 for (int i = 0; i < countyMasterList.size(); i++) {
                     if (countyMasterList.get(i).Name.equals(CountryItem)) {
+                        user.CountryId = countyMasterList.get(i).Id;
                         edittext_countrycode.setText("+" + countyMasterList.get(i).CountryCode);
                     }
                 }

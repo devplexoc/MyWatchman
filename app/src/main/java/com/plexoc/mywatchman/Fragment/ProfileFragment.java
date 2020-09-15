@@ -44,6 +44,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -68,9 +69,9 @@ public class ProfileFragment extends BaseFragment {
 
     private Toolbar toolbar;
     private TextInputLayout textinput_profile_firstname, textinput_lastname, textinput_email, textinput_mobilenumber,
-            textinput_password, textinput_username;
+            textinput_password, textinput_username, textinput_countrycode;
     private TextInputEditText edittext_profile_firstname, edittext_lastname, edittext_email, edittext_mobilenumber,
-            edittext_password, edittext_username;
+            edittext_password, edittext_username, edittext_countrycode;
     private MaterialButton button_update;
     private AppCompatTextView textview_username, textview_email;
     private AppCompatImageView imageView_profile_image;
@@ -95,6 +96,7 @@ public class ProfileFragment extends BaseFragment {
         textinput_mobilenumber = view.findViewById(R.id.textinput_mobilenumber);
         textinput_password = view.findViewById(R.id.textinput_password);
         textinput_username = view.findViewById(R.id.textinput_username);
+        textinput_countrycode = view.findViewById(R.id.textinput_countrycode);
 
         spinner_countrycode = view.findViewById(R.id.spinner_countrycode);
 
@@ -104,6 +106,7 @@ public class ProfileFragment extends BaseFragment {
         edittext_mobilenumber = view.findViewById(R.id.edittext_mobilenumber);
         edittext_password = view.findViewById(R.id.edittext_password);
         edittext_username = view.findViewById(R.id.edittext_username);
+        edittext_countrycode = view.findViewById(R.id.edittext_countrycode);
 
         textinput_mobilenumber.setBoxStrokeColor(getResources().getColor(R.color.colorPrimaryDark));
         textinput_email.setBoxStrokeColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -416,7 +419,7 @@ public class ProfileFragment extends BaseFragment {
                     closeKeybord();
                     if (response.body().Code == 200) {
                         user.Otp = response.body().Item.Otp;
-                       // Toast.makeText(getContext(), "Your OTP is : " + user.Otp, Toast.LENGTH_LONG).show();
+                        // Toast.makeText(getContext(), "Your OTP is : " + user.Otp, Toast.LENGTH_LONG).show();
                         replaceFragment(new MobileChangeOTPVerifyFragment(user, edittext_mobilenumber.getText().toString().trim()), null);
                     } else {
                         showMessage(response.body().Message);
@@ -472,7 +475,7 @@ public class ProfileFragment extends BaseFragment {
         });
     }
 
-    private void setData(){
+    private void setData() {
 
         if (user.FirstName != null) {
             edittext_profile_firstname.setText(user.FirstName);
@@ -482,12 +485,6 @@ public class ProfileFragment extends BaseFragment {
         }
         if (user.Email != null) {
             edittext_email.setText(user.Email);
-        }
-        if (user.Mobile != null) {
-            if (user.Mobile.startsWith("+231")) {
-                user.Mobile = user.Mobile.replaceFirst("\\+231", "");
-            }
-            edittext_mobilenumber.setText(user.Mobile);
         }
         if (user.Password != null) {
             edittext_password.setText(user.Password);
@@ -534,7 +531,18 @@ public class ProfileFragment extends BaseFragment {
                             arrayListSpinnerCountry.clear();
 
                         for (int i = 0; i < countyMasterList.size(); i++) {
-                            arrayListSpinnerCountry.add("+"+countyMasterList.get(i).CountryCode);
+                            if (user.CountryId == countyMasterList.get(i).Id) {
+                                edittext_countrycode.setText("+" + countyMasterList.get(i).CountryCode);
+                                if (user.Mobile != null) {
+                                    if (user.Mobile.startsWith(Pattern.quote("\\+"+countyMasterList.get(i).CountryCode))) {
+                                        user.Mobile = user.Mobile.replaceFirst(Pattern.quote("\\+"+countyMasterList.get(i).CountryCode), "");
+                                    }
+                                    edittext_mobilenumber.setText(user.Mobile);
+                                }
+                                //user.CountryId = countyMasterList.get(i).Id;
+
+                            }
+                            arrayListSpinnerCountry.add("+" + countyMasterList.get(i).CountryCode);
                         }
 
                         ArrayAdapter<String> arrayAdapterCountry = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayListSpinnerCountry);
