@@ -129,7 +129,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:visibility="visible"
-                    app:boxStrokeColor="@color/md_grey_800"
                     app:layout_constraintEnd_toEndOf="@+id/textview_username"
                     app:layout_constraintStart_toStartOf="@+id/textview_username"
                     app:layout_constraintTop_toBottomOf="@+id/textview_username">
@@ -216,12 +215,11 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textinput_countrycode"
-                    style="@style/CustomEditText"
+                    style="@style/CustomEditTextprofile"
                     android:layout_width="70dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="10dp"
                     android:visibility="visible"
-                    android:textColorHint="@color/colorPrimary"
                     app:layout_constraintBottom_toBottomOf="@+id/textinput_mobilenumber"
                     app:layout_constraintEnd_toStartOf="@+id/textinput_mobilenumber"
                     app:layout_constraintStart_toStartOf="@+id/textview_mobilenumber"
@@ -243,6 +241,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/textview_profile_firstname"
                     app:layout_constraintStart_toEndOf="@+id/textinput_countrycode"
                     app:layout_constraintTop_toBottomOf="@+id/textview_mobilenumber">
