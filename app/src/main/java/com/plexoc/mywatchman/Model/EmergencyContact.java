@@ -9,8 +9,8 @@ public class EmergencyContact {
     @SerializedName("CustomerId")
     public int CustomerId;
 
-    @SerializedName("Approvedstatus")
-    public boolean Approvedstatus;
+    @SerializedName("ApprovedStatus")
+    public boolean ApprovedStatus;
 
     @SerializedName("ContactName")
     public String ContactName;

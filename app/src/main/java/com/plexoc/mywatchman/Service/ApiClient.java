@@ -99,7 +99,6 @@ public interface ApiClient {
     @GET("customer/CustomerSigupByMobileExistsGenerateOTP")
     Call<Response<User>> Checkuser(@Query("Mobile") String Mobile, @Query("Username") String Username, @Query("Email") String Email);
 
-
     @GET("customer/CustomerGenrateOTPByMobileExists")
     Call<Response<User>> CheckuserForgot(@Query("Mobile") String Mobile);
 

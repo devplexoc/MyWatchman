@@ -56,8 +56,9 @@ public class ContactAdpter extends RecyclerView.Adapter<ContactAdpter.ViewHolder
         else
             holder.textview_conatact_email.setVisibility(View.GONE);
 
-        if (!emergencyContactList.get(position).Approvedstatus)
+        if (!emergencyContactList.get(position).ApprovedStatus){
             holder.textView_contact_status.setVisibility(View.VISIBLE);
+        }
         else
             holder.textView_contact_status.setVisibility(View.GONE);
 

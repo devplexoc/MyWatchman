@@ -74,9 +74,9 @@
         android:layout_marginBottom="10dp"
         android:layout_marginEnd="10dp"
         android:text="Ok"
-        app:layout_constraintEnd_toStartOf="@id/button_cancel"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_selectsostype" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/button_cancel"
+        app:layout_constraintTop_toTopOf="@+id/button_cancel"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_cancel"
@@ -85,8 +85,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:text="Cancel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/button_ok"
-        app:layout_constraintTop_toTopOf="@+id/button_ok" />
+        app:layout_constraintEnd_toStartOf="@id/button_ok"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_selectsostype"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
