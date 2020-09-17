@@ -1,6 +1,7 @@
 package com.plexoc.mywatchman.Adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.textview_notification.setText(notifiactionList.get(position).Description);
         else
             holder.textview_notification.setText(" - ");
+
+        holder.textview_createddate.setText(notifiactionList.get(position).CreatedDate);
+
+        if(notifiactionList.get(position).ReadDateTime != null){
+            holder.textview_notification.setTypeface(Typeface.create("work_sans",Typeface.NORMAL));
+        }else {
+            holder.textview_notification.setTypeface(Typeface.create("work_sans_bold",Typeface.BOLD));
+        }
     }
 
     @Override
@@ -47,12 +56,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        AppCompatTextView textview_notification;
+        AppCompatTextView textview_notification,textview_createddate;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             textview_notification = itemView.findViewById(R.id.textview_notification);
+            textview_createddate = itemView.findViewById(R.id.textview_createddate);
 
         }
     }

@@ -19,5 +19,11 @@ public class Notifiaction {
     @SerializedName("Description")
     public String Description;
 
+    @SerializedName("CreatedDate")
+    public String CreatedDate;
+
+    @SerializedName("ReadDateTime")
+    public String ReadDateTime;
+
 
 }
