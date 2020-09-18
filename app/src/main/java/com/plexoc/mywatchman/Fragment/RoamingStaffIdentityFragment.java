@@ -1,7 +1,10 @@
 package com.plexoc.mywatchman.Fragment;
 
 
+import android.Manifest;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -31,6 +34,12 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.button.MaterialButton;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.plexoc.mywatchman.Model.RaisedSOSUser;
 import com.plexoc.mywatchman.Model.Response;
 import com.plexoc.mywatchman.R;
@@ -78,10 +87,11 @@ public class RoamingStaffIdentityFragment extends BaseFragment implements OnMapR
     private GoogleMap mMap;
     private static final String MAP_VIEW_BUNDLE_KEY = "AIzaSyC6BHeJdoVNzD2PcBKGqxlFcYcddQFkWD8";
 
-    private AppCompatTextView textview_roaming_staff_name, textview_roaming_staff_age, textview_raised_sos_date, textview_raised_sos_time, textview_help_reached;
+    private AppCompatTextView textview_roaming_staff_name, textview_roaming_staff_age, textview_raised_sos_date, textview_raised_sos_time,
+            textview_help_reached, textview_sos_detail_contact;
     private RatingBar ratingbar_roaming_staff_rating;
     private String ResponderName;
-    private AppCompatImageView imageView_roamingStaff;
+    private AppCompatImageView imageView_roamingStaff, imageview_call;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -110,6 +120,9 @@ public class RoamingStaffIdentityFragment extends BaseFragment implements OnMapR
         textview_help_reached = view.findViewById(R.id.textview_help_reached);
         ratingbar_roaming_staff_rating = view.findViewById(R.id.ratingbar_roaming_staff_rating);
 
+        textview_sos_detail_contact = view.findViewById(R.id.textview_sos_detail_contact);
+        imageview_call = view.findViewById(R.id.imageview_call);
+
         imageView_roamingStaff = view.findViewById(R.id.imageview_roaming_staff_image);
 
         // mapFragment = view.findViewById(R.id.map);
@@ -117,6 +130,14 @@ public class RoamingStaffIdentityFragment extends BaseFragment implements OnMapR
 
         ConstraintLayout constraintLayoutRating = view.findViewById(R.id.constraintlayout_roaming_staff_rating);
         MaterialButton btnVerigyStaff = view.findViewById(R.id.btn_validate_roaming_staff);
+
+        textview_sos_detail_contact.setOnClickListener(v -> {
+            callPhone();
+        });
+
+        imageview_call.setOnClickListener(v -> {
+            callPhone();
+        });
 
         btnVerigyStaff.setOnClickListener(v -> {
             btnVerigyStaff.setVisibility(View.GONE);
@@ -161,6 +182,44 @@ public class RoamingStaffIdentityFragment extends BaseFragment implements OnMapR
         return view;
     }
 
+    private void callPhone() {
+
+        Dexter.withActivity(getActivity()).withPermission(Manifest.permission.CALL_PHONE).withListener(new PermissionListener() {
+            @Override
+            public void onPermissionGranted(PermissionGrantedResponse response) {
+                try {
+
+                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + textview_sos_detail_contact.getText().toString().trim()));
+                    startActivity(intent);
+
+                        /*    Intent callintent = new Intent(Intent.ACTION_CALL);
+                            callintent.setData(Uri.parse("tel :231123456789"));
+                            //callintent.setData(Uri.parse("tel :" + textview_sos_detail_contact.getText().toString()));
+                            //callintent.setData(Uri.parse("tel:+7405351880"));
+
+                       *//* if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            return;
+                        }*//*
+                            startActivity(callintent);*/
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onPermissionDenied(PermissionDeniedResponse response) {
+                Toast.makeText(getContext(), "Call Permission is Rqeuired to Make Call Please Give Permission from Settings", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                token.continuePermissionRequest();
+            }
+        }).check();
+
+    }
+
+
     private void getSOSById() {
         if (!isNetworkConnected()) {
             Toast.makeText(getContext(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
@@ -177,6 +236,8 @@ public class RoamingStaffIdentityFragment extends BaseFragment implements OnMapR
                             textview_roaming_staff_name.setText("Roaming staff not assigned yet.");
                             ratingbar_roaming_staff_rating.setVisibility(View.GONE);
                             textview_roaming_staff_age.setVisibility(View.GONE);
+                            textview_sos_detail_contact.setVisibility(View.GONE);
+                            imageview_call.setVisibility(View.GONE);
                         } else {
                             ResponderName = response.body().Item.ResponserName;
                             textview_roaming_staff_name.setText(response.body().Item.ResponserName);
@@ -184,8 +245,15 @@ public class RoamingStaffIdentityFragment extends BaseFragment implements OnMapR
                             if (response.body().Item.RoamingStaffPosition != null) {
                                 textview_roaming_staff_age.setVisibility(View.VISIBLE);
                                 textview_roaming_staff_age.setText("Position : " + response.body().Item.RoamingStaffPosition);
-                            }else {
+                            } else {
                                 textview_roaming_staff_age.setVisibility(View.GONE);
+                            }
+
+                            if (response.body().Item.RoamingStaffPhone != null) {
+                                textview_sos_detail_contact.setVisibility(View.VISIBLE);
+                                textview_sos_detail_contact.setText(response.body().Item.RoamingStaffPhone);
+                            } else {
+                                textview_sos_detail_contact.setVisibility(View.GONE);
                             }
                         }
 

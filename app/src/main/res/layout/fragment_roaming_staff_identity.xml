@@ -62,6 +62,27 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textview_sos_detail_contact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textSize="18dp"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="@id/textview_roaming_staff_name"
+                    app:layout_constraintTop_toBottomOf="@id/textview_roaming_staff_age" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_call"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_call"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintStart_toEndOf="@+id/textview_sos_detail_contact"
+                    app:layout_constraintTop_toTopOf="@+id/textview_sos_detail_contact"
+                    app:layout_constraintBottom_toBottomOf="@+id/textview_sos_detail_contact"/>
+
+
                 <androidx.appcompat.widget.AppCompatRatingBar
                     android:id="@+id/ratingbar_roaming_staff_rating"
                     style="@style/Widget.AppCompat.RatingBar.Small"

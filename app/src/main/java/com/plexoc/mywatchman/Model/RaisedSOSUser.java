@@ -109,6 +109,7 @@ public class RaisedSOSUser {
     @SerializedName("RoamingStaffPosition")
     public String RoamingStaffPosition;
 
-
+    @SerializedName("RoamingStaffPhone")
+    public String RoamingStaffPhone;
 
 }
