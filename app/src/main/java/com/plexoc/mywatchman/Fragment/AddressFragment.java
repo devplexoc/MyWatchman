@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,6 +49,8 @@ public class AddressFragment extends BaseFragment {
     private FloatingActionButton fab_add_address;
     private int Addresscount = 0;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -74,6 +77,12 @@ public class AddressFragment extends BaseFragment {
                 else
                     Toast.makeText(getContext(), "You can add only " + user.AddressCount + " address with this plan", Toast.LENGTH_SHORT).show();
             }
+        });
+
+        swipeRefreshLayout = view.findViewById(R.id.swipetorefresh);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            getAddress();
+            swipeRefreshLayout.setRefreshing(false);
         });
 
         getAddress();

@@ -52,6 +52,7 @@ public class OTPConfirmFragment extends BaseFragment implements OTPReceiveListen
     private AppCompatTextView textViewTimer;
     private boolean isForgotPassword;
     private MySMSBroadcastReceiver mSmsBroadcastReceive;
+    private MaterialButton button_varify;
     /*private TextInputEditText otp_view;
     private TextInputLayout textinput_otp_view;*/
 
@@ -66,7 +67,7 @@ public class OTPConfirmFragment extends BaseFragment implements OTPReceiveListen
         View view = inflater.inflate(R.layout.fragment_otpconfirm, container, false);
 
         AppCompatTextView textview_mobilenumber = view.findViewById(R.id.textview_mobilenumber);
-        MaterialButton button_varify = view.findViewById(R.id.button_varify);
+        button_varify = view.findViewById(R.id.button_varify);
         AppCompatImageView imageview_back = view.findViewById(R.id.imageview_back);
         otp_view = view.findViewById(R.id.otp_view);
         otp_view.requestFocus();
@@ -266,6 +267,7 @@ public class OTPConfirmFragment extends BaseFragment implements OTPReceiveListen
         String[] OTP = otp.split(" ");
         try {
             otp_view.setText(OTP[1]);
+            button_varify.performClick();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -16,14 +16,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardciew_roaming_staff_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="5dp"
         app:cardElevation="5dp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbarLayout">
@@ -32,10 +30,37 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_roaming_staff_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:paddingTop="10dp"
+                android:fontFamily="@font/work_sans_bold"
+                android:text="Roaming Staff Detail"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint_roaming_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/constrint_layout_raisedsos_detail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_roaming_staff_detail">
+
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imageview_roaming_staff_image"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_user_colorful" />
@@ -44,7 +69,6 @@
                 android:id="@+id/constraintlayout_roaming_staff_basic_detial"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@id/imageview_roaming_staff_image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/imageview_roaming_staff_image"
                 app:layout_constraintTop_toTopOf="@id/imageview_roaming_staff_image">
@@ -55,9 +79,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:fontFamily="@font/work_sans_bold"
                     tools:text="Martin Guptil"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -67,8 +90,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:textSize="18dp"
+                    android:paddingBottom="5dp"
+                    android:textSize="14sp"
                     android:textColor="@color/colorBlack"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@id/textview_roaming_staff_name"
                     app:layout_constraintTop_toBottomOf="@id/textview_roaming_staff_age" />
 
@@ -81,7 +106,6 @@
                     app:layout_constraintStart_toEndOf="@+id/textview_sos_detail_contact"
                     app:layout_constraintTop_toTopOf="@+id/textview_sos_detail_contact"
                     app:layout_constraintBottom_toBottomOf="@+id/textview_sos_detail_contact"/>
-
 
                 <androidx.appcompat.widget.AppCompatRatingBar
                     android:id="@+id/ratingbar_roaming_staff_rating"
@@ -104,12 +128,30 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
+                    android:layout_marginTop="5dp"
+                    android:textSize="14sp"
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/ratingbar_roaming_staff_rating" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textview_roaming_staff_notassign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="10dp"
+                android:text="Roaming staff not assigned yet."
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/constrint_layout_raisedsos_detail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_roaming_staff_detail" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constrint_layout_raisedsos_detail"
@@ -118,36 +160,51 @@
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imageview_roaming_staff_image">
-
+                app:layout_constraintTop_toBottomOf="@id/constraint_roaming_details">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textview_raised_sos_date_lbl"
-                    android:layout_width="match_parent"
+                    android:id="@+id/textview_sos_details"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
-                    android:paddingTop="05dp"
-                    android:text="SOS Raised On :"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:paddingTop="5dp"
+                    android:fontFamily="@font/work_sans_bold"
+                    android:text="SOS Detail"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textview_raised_sos_date"
+                    android:id="@+id/textview_raised_sos_date_lbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="SOS Raised On :"
+                    app:layout_constraintEnd_toStartOf="@+id/textview_raised_sos_date"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_sos_details" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textview_raised_sos_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
                     android:fontFamily="@font/work_sans_medium"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     tools:text="15/FEB/2020"
                     android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textview_raised_sos_date_lbl"
+                    app:layout_constraintBottom_toBottomOf="@+id/textview_raised_sos_date_lbl"
                     app:layout_constraintEnd_toStartOf="@+id/textview_raised_sos_time"
-                    app:layout_constraintTop_toBottomOf="@id/textview_raised_sos_date_lbl" />
+                    app:layout_constraintTop_toTopOf="@id/textview_raised_sos_date_lbl" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textview_raised_sos_time"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:fontFamily="@font/work_sans_medium"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
@@ -157,31 +214,54 @@
                     app:layout_constraintStart_toEndOf="@+id/textview_raised_sos_date"
                     app:layout_constraintTop_toTopOf="@+id/textview_raised_sos_date" />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textview_raised_sos_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="10dp"
+                    android:text="SOS Type :"
+                    app:layout_constraintStart_toStartOf="@+id/textview_raised_sos_date_lbl"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_raised_sos_date_lbl" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textview_help_reached_lbl"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
-                    android:paddingTop="05dp"
-                    android:text="Estimated Time Of Arrival :"
-                    app:layout_constraintEnd_toStartOf="@+id/textview_roaming_staff_name_lbl"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textview_raised_sos_date" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textview_help_reached"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/textview_raised_sos_type_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
                     android:fontFamily="@font/work_sans_medium"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:paddingBottom="05dp"
+                    tools:text="15/FEB/2020"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@+id/textview_raised_sos_type"
+                    app:layout_constraintBottom_toBottomOf="@+id/textview_raised_sos_type"
+                    app:layout_constraintTop_toTopOf="@id/textview_raised_sos_type" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textview_help_reached_lbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Estimated Time Of Arrival :"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/textview_help_reached"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_raised_sos_type" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textview_help_reached"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:fontFamily="@font/work_sans_medium"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     tools:text=" - "
                     android:textSize="16sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textview_help_reached_lbl" />
+                    app:layout_constraintStart_toEndOf="@+id/textview_help_reached_lbl"
+                    app:layout_constraintBottom_toBottomOf="@+id/textview_help_reached_lbl"
+                    app:layout_constraintTop_toTopOf="@id/textview_help_reached_lbl" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

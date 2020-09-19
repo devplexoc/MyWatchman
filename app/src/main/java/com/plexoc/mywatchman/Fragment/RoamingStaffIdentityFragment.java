@@ -74,6 +74,7 @@ public class RoamingStaffIdentityFragment extends BaseFragment implements OnMapR
     private LatLng origin, dest;
     private boolean isHandlerStopped = false;
     private String duration, distance;
+    private boolean isFirstTime = true;
 
     private Handler handler;
     private Runnable runnable;
@@ -88,10 +89,10 @@ public class RoamingStaffIdentityFragment extends BaseFragment implements OnMapR
     private static final String MAP_VIEW_BUNDLE_KEY = "AIzaSyC6BHeJdoVNzD2PcBKGqxlFcYcddQFkWD8";
 
     private AppCompatTextView textview_roaming_staff_name, textview_roaming_staff_age, textview_raised_sos_date, textview_raised_sos_time,
-            textview_help_reached, textview_sos_detail_contact;
+            textview_help_reached, textview_sos_detail_contact,textview_raised_sos_type_name,textview_roaming_staff_notassign;
     private RatingBar ratingbar_roaming_staff_rating;
     private String ResponderName;
-    private AppCompatImageView imageView_roamingStaff, imageview_call;
+    private AppCompatImageView imageView_roamingStaff, imageview_call,imageview_roaming_staff_image;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -104,7 +105,7 @@ public class RoamingStaffIdentityFragment extends BaseFragment implements OnMapR
         mapFragment.getMapAsync(this);
 
         Toolbar toolbar = view.findViewById(R.id.toolbar);
-        toolbar.setTitle("Roaming Staff");
+        toolbar.setTitle("Your SOS Detail");
         toolbar.setNavigationIcon(R.drawable.back);
         toolbar.setNavigationOnClickListener(v -> {
             if (Constants.isFromNotification)
@@ -119,6 +120,9 @@ public class RoamingStaffIdentityFragment extends BaseFragment implements OnMapR
         textview_raised_sos_time = view.findViewById(R.id.textview_raised_sos_time);
         textview_help_reached = view.findViewById(R.id.textview_help_reached);
         ratingbar_roaming_staff_rating = view.findViewById(R.id.ratingbar_roaming_staff_rating);
+        textview_raised_sos_type_name = view.findViewById(R.id.textview_raised_sos_type_name);
+        textview_roaming_staff_notassign = view.findViewById(R.id.textview_roaming_staff_notassign);
+        imageview_roaming_staff_image = view.findViewById(R.id.imageview_roaming_staff_image);
 
         textview_sos_detail_contact = view.findViewById(R.id.textview_sos_detail_contact);
         imageview_call = view.findViewById(R.id.imageview_call);
@@ -225,6 +229,7 @@ public class RoamingStaffIdentityFragment extends BaseFragment implements OnMapR
             Toast.makeText(getContext(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
             return;
         }
+        if(isFirstTime)
         LoadingDialog.showLoadingDialog(getContext());
         getApiClient().getSOS(SOSID).enqueue(new Callback<Response<RaisedSOSUser>>() {
             @Override
@@ -232,13 +237,19 @@ public class RoamingStaffIdentityFragment extends BaseFragment implements OnMapR
                 if (response.isSuccessful()) {
                     if (response.body().Item != null) {
 
+                        isFirstTime = false;
                         if (response.body().Item.ResponserName == null) {
-                            textview_roaming_staff_name.setText("Roaming staff not assigned yet.");
+                            textview_roaming_staff_notassign.setVisibility(View.VISIBLE);
                             ratingbar_roaming_staff_rating.setVisibility(View.GONE);
                             textview_roaming_staff_age.setVisibility(View.GONE);
                             textview_sos_detail_contact.setVisibility(View.GONE);
                             imageview_call.setVisibility(View.GONE);
+                            imageview_roaming_staff_image.setVisibility(View.GONE);
                         } else {
+                            textview_roaming_staff_notassign.setVisibility(View.GONE);
+                            imageview_roaming_staff_image.setVisibility(View.VISIBLE);
+                            imageview_call.setVisibility(View.VISIBLE);
+                            textview_roaming_staff_name.setVisibility(View.VISIBLE);
                             ResponderName = response.body().Item.ResponserName;
                             textview_roaming_staff_name.setText(response.body().Item.ResponserName);
 
@@ -255,6 +266,8 @@ public class RoamingStaffIdentityFragment extends BaseFragment implements OnMapR
                             } else {
                                 textview_sos_detail_contact.setVisibility(View.GONE);
                             }
+
+                            textview_raised_sos_type_name.setText(response.body().Item.SOSType);
                         }
 
 
@@ -562,6 +575,7 @@ public class RoamingStaffIdentityFragment extends BaseFragment implements OnMapR
     @Override
     public void onPause() {
         super.onPause();
+        isFirstTime = true;
         handler.removeCallbacks(runnable);
     }
 

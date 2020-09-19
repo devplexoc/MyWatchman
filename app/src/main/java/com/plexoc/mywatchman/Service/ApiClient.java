@@ -90,6 +90,9 @@ public interface ApiClient {
     @GET("plan/SOSSelectAllByAddresIdAndCustomerId")
     Call<ListResponse<RaisedSOSUser>> getAddressWiseRaisedSOS(@Query("CustomerId") int UserId, @Query("AddressId") int AddressId, @Query("Offset") int Offset, @Query("Limit") int Limit);
 
+    @GET("plan/SOSSelectAllByCustomerId")
+    Call<ListResponse<RaisedSOSUser>> getSOSHistory(@Query("CustomerId") int UserId, @Query("Offset") int Offset, @Query("Limit") int Limit);
+
     @POST("plan/SOSIsactiveORInactive")
     Call<Response<RaisedSOSUser>> CompleteSOS(@Query("SosId") int SosId, @Query("Status") int Status);
 
@@ -123,7 +126,6 @@ public interface ApiClient {
 
     @GET("sOSType/GetSOSCountByCustomerId")
     Call<ListResponse<SosType>> getSOSCountBuCustomerId(@Query("CustomerId") int CustomerId);
-
 
     @GET("plan/GetSOSById/{SOSId}")
     Call<Response<RaisedSOSUser>> getSOS(@Path("SOSId") int SOSId);

@@ -7,6 +7,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,6 +45,8 @@ public class MyCommunityFragment extends BaseFragment {
     private List<EmergencyContact> emergencyContactList = new ArrayList<>();
     private ContactAdpter contactAdpter;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -60,6 +63,12 @@ public class MyCommunityFragment extends BaseFragment {
                 //OpenDialog();
                 replaceFragment(new AddEmergencyContactFragment(), null);
             }
+        });
+
+        swipeRefreshLayout = view.findViewById(R.id.swipetorefresh);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            getAllEmergencyContact();
+            swipeRefreshLayout.setRefreshing(false);
         });
 
         getAllEmergencyContact();

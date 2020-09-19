@@ -7,6 +7,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,6 +40,8 @@ public class CommunityRequestFragment extends BaseFragment {
     RecyclerView recyclerViewRequest;
     CommunityRequestAdpter requestAdpter;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     public CommunityRequestFragment() {
         // Required empty public constructor
     }
@@ -51,6 +54,12 @@ public class CommunityRequestFragment extends BaseFragment {
 
         recyclerViewRequest = view.findViewById(R.id.recyclerview_community_request);
         textview_norecordfound = view.findViewById(R.id.textview_norecordfound);
+
+        swipeRefreshLayout = view.findViewById(R.id.swipetorefresh);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            getAllCommunityRequest();
+            swipeRefreshLayout.setRefreshing(false);
+        });
 
         //setData();
         getAllCommunityRequest();

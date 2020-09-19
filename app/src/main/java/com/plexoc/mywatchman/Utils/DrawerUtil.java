@@ -37,6 +37,7 @@ import com.plexoc.mywatchman.Fragment.DashboardFragment;
 import com.plexoc.mywatchman.Fragment.EmergencyContactFragment;
 import com.plexoc.mywatchman.Fragment.NotificationFragment;
 import com.plexoc.mywatchman.Fragment.ProfileFragment;
+import com.plexoc.mywatchman.Fragment.SOSHistoryFragment;
 import com.plexoc.mywatchman.Fragment.StatisticsFragment;
 import com.plexoc.mywatchman.Model.User;
 import com.plexoc.mywatchman.R;
@@ -58,6 +59,7 @@ public class DrawerUtil {
         PrimaryDrawerItem item8 = new PrimaryDrawerItem().withIdentifier(8).withName("Notification").withSelectable(false);
         PrimaryDrawerItem item7 = new PrimaryDrawerItem().withIdentifier(7).withName("Logout").withSelectable(false);
         PrimaryDrawerItem item9 = new PrimaryDrawerItem().withIdentifier(9).withName("Statistics").withSelectable(false);
+        PrimaryDrawerItem item10 = new PrimaryDrawerItem().withIdentifier(10).withName("SOS History").withSelectable(false);
 
         /*Prefs.getString("UserName");
         Prefs.getString("UserEmail");
@@ -96,6 +98,7 @@ public class DrawerUtil {
                         item4,
                         item5,
                         item6,
+                        item10,
                         item9,
                         item8,
                         item7
@@ -136,6 +139,10 @@ public class DrawerUtil {
                     break;
                 case "6":
                     replaceFragment(new BillingFragment(), null, activity);
+                    drawer.closeDrawer();
+                    break;
+                case "10":
+                    replaceFragment(new SOSHistoryFragment(), null, activity);
                     drawer.closeDrawer();
                     break;
                 case "9":
