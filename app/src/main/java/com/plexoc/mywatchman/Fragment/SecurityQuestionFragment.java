@@ -117,7 +117,8 @@ public class SecurityQuestionFragment extends BaseFragment {
                         for (int i = 0; i < securityQuestionList.size(); i++) {
                             questions.add(securityQuestionList.get(i).Questions);
                         }
-                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, questions);
+                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),R.layout.textview_dropdown,R.id.textview_dropdown, questions);
+                        //arrayAdapter.setDropDownViewResource(R.layout.textview_dropdown);
                         spinnerQuestions.setAdapter(arrayAdapter);
 
 
