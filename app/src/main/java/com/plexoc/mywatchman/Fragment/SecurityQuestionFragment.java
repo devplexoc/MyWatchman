@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.fragment.app.Fragment;
 
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -115,7 +116,9 @@ public class SecurityQuestionFragment extends BaseFragment {
                         securityQuestionList = response.body().Values;
 
                         for (int i = 0; i < securityQuestionList.size(); i++) {
-                            questions.add(securityQuestionList.get(i).Questions);
+                            String s = securityQuestionList.get(i).Questions;
+                            s = s.replaceAll("\\<.*?\\>", "");
+                            questions.add(s);
                         }
                         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),R.layout.textview_dropdown,R.id.textview_dropdown, questions);
                         //arrayAdapter.setDropDownViewResource(R.layout.textview_dropdown);

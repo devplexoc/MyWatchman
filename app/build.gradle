@@ -4,7 +4,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 android {
     signingConfigs {
         release {
-            storeFile file('F:\\Plexoc\\Sos\\Sos\\Sos\\mywatchman.jks')
+            storeFile file('C:\\Users\\Admin\\AndroidStudioProjects\\MyWatchman\\mywatchman.jks')
             storePassword 'mywatchman'
             keyAlias 'mywatchman'
             keyPassword 'mywatchman'

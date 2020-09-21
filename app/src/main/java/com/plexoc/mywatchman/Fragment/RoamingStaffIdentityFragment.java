@@ -86,7 +86,8 @@ public class RoamingStaffIdentityFragment extends BaseFragment implements OnMapR
 
     private View mapFragment;
     private GoogleMap mMap;
-    private static final String MAP_VIEW_BUNDLE_KEY = "AIzaSyC6BHeJdoVNzD2PcBKGqxlFcYcddQFkWD8";
+    //private static final String MAP_VIEW_BUNDLE_KEY = "AIzaSyC6BHeJdoVNzD2PcBKGqxlFcYcddQFkWD8";
+    private static final String MAP_VIEW_BUNDLE_KEY = "AIzaSyDby5O_0c4dCBX50h_8RDYaXuA619oA9lY";
 
     private AppCompatTextView textview_roaming_staff_name, textview_roaming_staff_age, textview_raised_sos_date, textview_raised_sos_time,
             textview_help_reached, textview_sos_detail_contact,textview_raised_sos_type_name,textview_roaming_staff_notassign;
