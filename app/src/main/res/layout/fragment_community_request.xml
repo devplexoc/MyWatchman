@@ -23,9 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
+        
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textview_norecordfound"
         android:layout_width="wrap_content"
@@ -39,6 +37,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
