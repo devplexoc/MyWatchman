@@ -51,6 +51,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.plexoc.mywatchman.Activity.PaymentActivity;
 import com.plexoc.mywatchman.Model.Address;
+import com.plexoc.mywatchman.Model.Error;
 import com.plexoc.mywatchman.Model.ListResponse;
 import com.plexoc.mywatchman.Model.OptionsModel;
 import com.plexoc.mywatchman.Model.QuestionModel;
@@ -63,6 +64,7 @@ import com.plexoc.mywatchman.Utils.DrawerUtil;
 import com.plexoc.mywatchman.Utils.LoadingDialog;
 import com.plexoc.mywatchman.Utils.Prefs;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -384,7 +386,12 @@ public class DashboardFragment extends BaseFragment {
                 } else if (response.code() == Constants.InternalServerError) {
                     showMessage(Constants.DefaultErrorMessage);
                 } else {
-                    showMessage(Constants.DefaultErrorMessage);
+                    try {
+                        Error error = new Gson().fromJson(response.errorBody().string(), Error.class);
+                        showMessage(error.Message);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 LoadingDialog.cancelLoading();
             }
