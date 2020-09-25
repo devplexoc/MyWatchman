@@ -70,7 +70,8 @@ public class AddAddressFragment extends BaseFragment implements OnMapReadyCallba
 
     private MapView mapView;
     private GoogleMap mMap;
-    private static final String MAP_VIEW_BUNDLE_KEY = "AIzaSyC6BHeJdoVNzD2PcBKGqxlFcYcddQFkWD8";
+    //private static final String MAP_VIEW_BUNDLE_KEY = "AIzaSyC6BHeJdoVNzD2PcBKGqxlFcYcddQFkWD8";
+    private static final String MAP_VIEW_BUNDLE_KEY = "AIzaSyDby5O_0c4dCBX50h_8RDYaXuA619oA9lY";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

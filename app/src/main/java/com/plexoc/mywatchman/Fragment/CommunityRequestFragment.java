@@ -90,6 +90,8 @@ public class CommunityRequestFragment extends BaseFragment {
                 if (response.isSuccessful()) {
                     if (!response.body().Values.isEmpty()) {
 
+                        recyclerViewRequest.setVisibility(View.VISIBLE);
+
                         EmergencyContactFragment.setBadgeCount(response.body().Values.size());
                         requestAdpter = new CommunityRequestAdpter(response.body().Values, new CommunityRequestAdpter.Callback() {
                             @Override

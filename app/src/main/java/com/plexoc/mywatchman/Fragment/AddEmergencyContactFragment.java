@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -20,16 +21,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
+import com.plexoc.mywatchman.Model.CountyMaster;
 import com.plexoc.mywatchman.Model.EmergencyContact;
+import com.plexoc.mywatchman.Model.Error;
+import com.plexoc.mywatchman.Model.ListResponse;
 import com.plexoc.mywatchman.Model.Response;
 import com.plexoc.mywatchman.R;
 import com.plexoc.mywatchman.Utils.Constants;
 import com.plexoc.mywatchman.Utils.LoadingDialog;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,16 +57,22 @@ public class AddEmergencyContactFragment extends BaseFragment {
 
     public static final int RequestPermissionCode = 1;
 
+    private ArrayList<String> arrayListSpinnerCountry = new ArrayList<>();
+    private List<CountyMaster> countyMasterList;
+
     private EmergencyContact emergencyContact;
     private Toolbar toolbar;
 
+    private AppCompatSpinner spinner_countrycode;
+
     private TextInputLayout textinput_addcontact_contactname, textinput_addcontact_contactphone, textinput_addcontact_contectemail,
-            textinput_addcontact_contectrelation;
+            textinput_addcontact_contectrelation,textinput_countrycode;
     private TextInputEditText edittext_addcontact_contactname, edittext_addcontact_contactphone, edittext_addcontact_contectemail,
-            edittext_addcontact_contectrelation;
+            edittext_addcontact_contectrelation,edittext_countrycode;
     private MaterialButton button_addcontact_add, button_addcontact_contactlist;
     private AppCompatImageView imageview_contact;
     private AppCompatTextView textview_countrycode;
+    private String CountryItem;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,15 +89,19 @@ public class AddEmergencyContactFragment extends BaseFragment {
 
         textview_countrycode = view.findViewById(R.id.textview_countrycode);
 
+        spinner_countrycode = view.findViewById(R.id.spinner_countrycode);
+
         textinput_addcontact_contactname = view.findViewById(R.id.textinput_addcontact_contactname);
         textinput_addcontact_contactphone = view.findViewById(R.id.textinput_addcontact_contactphone);
         textinput_addcontact_contectemail = view.findViewById(R.id.textinput_addcontact_contectemail);
         textinput_addcontact_contectrelation = view.findViewById(R.id.textinput_addcontact_contectrelation);
+        textinput_countrycode = view.findViewById(R.id.textinput_countrycode);
 
         edittext_addcontact_contactname = view.findViewById(R.id.edittext_addcontact_contactname);
         edittext_addcontact_contactphone = view.findViewById(R.id.edittext_addcontact_contactphone);
         edittext_addcontact_contectemail = view.findViewById(R.id.edittext_addcontact_contectemail);
         edittext_addcontact_contectrelation = view.findViewById(R.id.edittext_addcontact_contectrelation);
+        edittext_countrycode = view.findViewById(R.id.edittext_countrycode);
 
         button_addcontact_add = view.findViewById(R.id.button_addcontact_add);
         button_addcontact_contactlist = view.findViewById(R.id.button_addcontact_contactlist);
@@ -93,7 +114,7 @@ public class AddEmergencyContactFragment extends BaseFragment {
 
                     emergencyContact.CustomerId = user.Id;
                     emergencyContact.ContactName = edittext_addcontact_contactname.getText().toString().trim();
-                    emergencyContact.ContactPhone = textview_countrycode.getText().toString().trim() + edittext_addcontact_contactphone.getText().toString().trim();
+                    emergencyContact.ContactPhone = edittext_countrycode.getText().toString().trim() + edittext_addcontact_contactphone.getText().toString().trim();
                     emergencyContact.ContactEmail = edittext_addcontact_contectemail.getText().toString().trim();
                     emergencyContact.Relation = edittext_addcontact_contectrelation.getText().toString().trim();
 
@@ -104,6 +125,35 @@ public class AddEmergencyContactFragment extends BaseFragment {
 
                     AddEmergencyContact();
                 }
+            }
+        });
+
+        edittext_countrycode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                spinner_countrycode.performClick();
+            }
+        });
+
+        getCountryList();
+
+        spinner_countrycode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                CountryItem = parent.getItemAtPosition(position).toString();
+                CountryItem = arrayListSpinnerCountry.get(position);
+
+                for (int i = 0; i < countyMasterList.size(); i++) {
+                    if (countyMasterList.get(i).Name.equals(CountryItem)) {
+                        user.CountryId = countyMasterList.get(i).Id;
+                        edittext_countrycode.setText("+" + countyMasterList.get(i).CountryCode);
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
@@ -261,6 +311,52 @@ public class AddEmergencyContactFragment extends BaseFragment {
                 showMessage(Constants.DefaultErrorMessage);
             }
         });
+    }
+
+    private void getCountryList() {
+
+        if (!isNetworkConnected()) {
+            Toast.makeText(getContext(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        LoadingDialog.showLoadingDialog(getContext());
+        getApiClient().getAllCountry().enqueue(new Callback<ListResponse<CountyMaster>>() {
+            @Override
+            public void onResponse(Call<ListResponse<CountyMaster>> call, retrofit2.Response<ListResponse<CountyMaster>> response) {
+                if (response.code() == Constants.SuccessCode) {
+                    if (!response.body().Values.isEmpty()) {
+                        countyMasterList = response.body().Values;
+
+                        if (!arrayListSpinnerCountry.isEmpty())
+                            arrayListSpinnerCountry.clear();
+
+                        for (int i = 0; i < countyMasterList.size(); i++) {
+                            arrayListSpinnerCountry.add(countyMasterList.get(i).Name);
+                        }
+
+                        ArrayAdapter<String> arrayAdapterCountry = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayListSpinnerCountry);
+                        spinner_countrycode.setAdapter(arrayAdapterCountry);
+
+                    }
+                } else if (response.code() == Constants.InternalServerError) {
+                    showMessage(Constants.DefaultErrorMessage);
+                } else {
+                    try {
+                        Error error = new Gson().fromJson(response.errorBody().string(), Error.class);
+                        showMessage(error.Message);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                LoadingDialog.cancelLoading();
+            }
+
+            @Override
+            public void onFailure(Call<ListResponse<CountyMaster>> call, Throwable t) {
+
+            }
+        });
+
     }
 
 
