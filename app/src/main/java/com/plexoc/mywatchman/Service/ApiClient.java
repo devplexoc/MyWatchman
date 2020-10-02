@@ -133,6 +133,10 @@ public interface ApiClient {
     @GET("customer/UserChangePassword")
     Call<Response<ChangePassword>> getChangePassword(@Query("UserId") int UserId, @Query("Password") String Password, @Query("Type") int Type);
 
+    @FormUrlEncoded
+    @POST("customer/CustomerChangePassword")
+    Call<Response<ChangePassword>> getResetPassword(@Field("Id") int Id, @Field("Password") String Password);
+
     @GET("customer/ResendOtp")
     Call<Response<User>> ResendOTP(@Query("Mobile") String Mobile, @Query("Otp") String Otp);
 

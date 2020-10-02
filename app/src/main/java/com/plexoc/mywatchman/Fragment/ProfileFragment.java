@@ -494,6 +494,9 @@ public class ProfileFragment extends BaseFragment {
         if (user.UserName != null) {
             edittext_username.setText(user.UserName);
         }
+        if(user.Mobile != null){
+            edittext_mobilenumber.setText(user.Mobile);
+        }
 
         if (user.ProfilePicture != null) {
             Glide.with(getContext())

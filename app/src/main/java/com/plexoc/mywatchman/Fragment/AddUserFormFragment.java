@@ -4,6 +4,7 @@ package com.plexoc.mywatchman.Fragment;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -12,13 +13,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.plexoc.mywatchman.Model.CountyMaster;
 import com.plexoc.mywatchman.Model.Error;
+import com.plexoc.mywatchman.Model.ListResponse;
 import com.plexoc.mywatchman.Model.Response;
 import com.plexoc.mywatchman.Model.User;
 import com.plexoc.mywatchman.R;
@@ -26,6 +31,8 @@ import com.plexoc.mywatchman.Utils.Constants;
 import com.plexoc.mywatchman.Utils.LoadingDialog;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,10 +49,16 @@ public class AddUserFormFragment extends BaseFragment {
     String str = "+213";
     int nbr = 4;
 
+    private ArrayList<String> arrayListSpinnerCountry = new ArrayList<>();
+    private List<CountyMaster> countyMasterList;
+
     private TextInputLayout textinput_user_name, textinput_user_lastname, textinput_user_mobilenumber, textinput_user_password, textinput_user_email;
-    private TextInputEditText edittext_user_name, edittext_user_lastname, edittext_user_mobilenumber, edittext_user_password, edittext_user_email;
+    private TextInputEditText edittext_user_name, edittext_user_lastname, edittext_user_mobilenumber, edittext_user_password,
+            edittext_user_email,edittext_countrycode;
     private AppCompatTextView textview_user_password, textview_countrycode;
     private AppCompatImageView imageview_contact;
+    private AppCompatSpinner spinner_countrycode;
+    private String CountryItem;
 
     private MaterialButton button_signup;
 
@@ -78,11 +91,44 @@ public class AddUserFormFragment extends BaseFragment {
         edittext_user_mobilenumber = view.findViewById(R.id.edittext_user_mobilenumber);
         edittext_user_password = view.findViewById(R.id.edittext_user_password);
         edittext_user_email = view.findViewById(R.id.edittext_addcontact_contectemail);
+        edittext_countrycode = view.findViewById(R.id.edittext_countrycode);
+
+        spinner_countrycode = view.findViewById(R.id.spinner_countrycode);
 
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.setTitle("Users");
         toolbar.setNavigationIcon(R.drawable.back);
         toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
+
+
+        edittext_countrycode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                spinner_countrycode.performClick();
+            }
+        });
+
+        getCountryList();
+
+        spinner_countrycode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                CountryItem = parent.getItemAtPosition(position).toString();
+                CountryItem = arrayListSpinnerCountry.get(position);
+
+                for (int i = 0; i < countyMasterList.size(); i++) {
+                    if (countyMasterList.get(i).Name.equals(CountryItem)) {
+                        user.CountryId = countyMasterList.get(i).Id;
+                        edittext_countrycode.setText("+" + countyMasterList.get(i).CountryCode);
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         if (fName != null) {
             edittext_user_name.setText(fName);
@@ -116,7 +162,7 @@ public class AddUserFormFragment extends BaseFragment {
                     user.ParentCustomer = user.Id;
                     user.FirstName = edittext_user_name.getText().toString().trim();
                     user.LastName = edittext_user_lastname.getText().toString().trim();
-                    user.Mobile = textview_countrycode.getText().toString().trim() + edittext_user_mobilenumber.getText().toString().trim();
+                    user.Mobile = edittext_countrycode.getText().toString().trim() + edittext_user_mobilenumber.getText().toString().trim();
                     user.Email = edittext_user_email.getText().toString().trim();
                     user.Password = edittext_user_password.getText().toString().trim();
 
@@ -124,6 +170,7 @@ public class AddUserFormFragment extends BaseFragment {
                 }
             }
         });
+
 
         return view;
     }
@@ -136,7 +183,7 @@ public class AddUserFormFragment extends BaseFragment {
 
         LoadingDialog.showLoadingDialog(getContext());
         getApiClient().SubUserSignup(id, user.ParentCustomer, edittext_user_name.getText().toString().trim(), edittext_user_lastname.getText().toString().trim(),
-                textview_countrycode.getText().toString().trim() + edittext_user_mobilenumber.getText().toString().trim(),edittext_user_email.getText().toString().trim(), edittext_user_password.getText().toString().trim()).enqueue(new Callback<Response<User>>() {
+                edittext_countrycode.getText().toString().trim() + edittext_user_mobilenumber.getText().toString().trim(), edittext_user_email.getText().toString().trim(), edittext_user_password.getText().toString().trim()).enqueue(new Callback<Response<User>>() {
             @Override
             public void onResponse(Call<Response<User>> call, retrofit2.Response<Response<User>> response) {
                 if (response.code() == Constants.SuccessCode) {
@@ -169,6 +216,52 @@ public class AddUserFormFragment extends BaseFragment {
         });
     }
 
+    private void getCountryList() {
+
+        if (!isNetworkConnected()) {
+            Toast.makeText(getContext(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        LoadingDialog.showLoadingDialog(getContext());
+        getApiClient().getAllCountry().enqueue(new Callback<ListResponse<CountyMaster>>() {
+            @Override
+            public void onResponse(Call<ListResponse<CountyMaster>> call, retrofit2.Response<ListResponse<CountyMaster>> response) {
+                if (response.code() == Constants.SuccessCode) {
+                    if (!response.body().Values.isEmpty()) {
+                        countyMasterList = response.body().Values;
+
+                        if (!arrayListSpinnerCountry.isEmpty())
+                            arrayListSpinnerCountry.clear();
+
+                        for (int i = 0; i < countyMasterList.size(); i++) {
+                            arrayListSpinnerCountry.add(countyMasterList.get(i).Name);
+                        }
+
+                        ArrayAdapter<String> arrayAdapterCountry = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayListSpinnerCountry);
+                        spinner_countrycode.setAdapter(arrayAdapterCountry);
+
+                    }
+                } else if (response.code() == Constants.InternalServerError) {
+                    showMessage(Constants.DefaultErrorMessage);
+                } else {
+                    try {
+                        Error error = new Gson().fromJson(response.errorBody().string(), Error.class);
+                        showMessage(error.Message);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                LoadingDialog.cancelLoading();
+            }
+
+            @Override
+            public void onFailure(Call<ListResponse<CountyMaster>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
     private boolean doValidate() {
 
         if (edittext_user_name.getText().toString().trim().isEmpty()) {
@@ -198,24 +291,25 @@ public class AddUserFormFragment extends BaseFragment {
             textinput_user_mobilenumber.setErrorEnabled(false);
         }
 
-        if (edittext_user_password.getText().toString().trim().isEmpty()) {
-            textinput_user_password.setError("Please enter password");
-            edittext_user_password.requestFocus();
-            return false;
-        } else {
-            edittext_user_password.clearFocus();
-            textinput_user_password.setErrorEnabled(false);
-        }
+        if (password == null) {
+            if (edittext_user_password.getText().toString().trim().isEmpty()) {
+                textinput_user_password.setError("Please enter password");
+                edittext_user_password.requestFocus();
+                return false;
+            } else {
+                edittext_user_password.clearFocus();
+                textinput_user_password.setErrorEnabled(false);
+            }
 
-        if (!isValidPassword(edittext_user_password.getText().toString().trim())) {
-            textinput_user_password.setError("password must be of minimum 8 characters and must include a capital letter , a special charcter and a digit");
-            edittext_user_password.requestFocus();
-            return false;
-        } else {
-            textinput_user_password.setErrorEnabled(false);
-            edittext_user_password.clearFocus();
+            if (!isValidPassword(edittext_user_password.getText().toString().trim())) {
+                textinput_user_password.setError("password must be of minimum 8 characters and must include a capital letter , a special charcter and a digit");
+                edittext_user_password.requestFocus();
+                return false;
+            } else {
+                textinput_user_password.setErrorEnabled(false);
+                edittext_user_password.clearFocus();
+            }
         }
-
 
         if (!edittext_user_email.getText().toString().trim().isEmpty()) {
 

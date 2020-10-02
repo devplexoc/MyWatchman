@@ -70,8 +70,8 @@ public class SubUserResetPasswordFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 if (doValidate()) {
+                    Password = edittext_user_confirmpassword.getText().toString().trim();
                     CallUpdatePasswordApi();
-                    getActivity().onBackPressed();
                 }
             }
         });
@@ -126,7 +126,6 @@ public class SubUserResetPasswordFragment extends BaseFragment {
             textinput_user_newpassword.setError("");
         }
 
-
         return flg;
     }
 
@@ -137,14 +136,14 @@ public class SubUserResetPasswordFragment extends BaseFragment {
             return;
         }
         LoadingDialog.showLoadingDialog(getContext());
-        getApiClient().getChangePassword(Id, Password, 2).enqueue(new Callback<Response<ChangePassword>>() {
+        getApiClient().getResetPassword(Id, Password).enqueue(new Callback<Response<ChangePassword>>() {
             @Override
             public void onResponse(Call<Response<ChangePassword>> call, retrofit2.Response<Response<ChangePassword>> response) {
                 if (response.code() == Constants.SuccessCode) {
                     if (response.body().Item != null) {
 
-                        response.body().Item.Password = edittext_user_newpassword.getText().toString().trim();
-
+                        //response.body().Item.Password = edittext_user_newpassword.getText().toString().trim();
+                        getActivity().onBackPressed();
                         /*Prefs.putString(Prefs.USER, new Gson().toJson(response.body().Item));
                         user = new Gson().fromJson(Prefs.getString(Prefs.USER), User.class);*/
 
