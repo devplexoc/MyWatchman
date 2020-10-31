@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.plexoc.mywatchman.Fragment.DashboardFragment;
 import com.plexoc.mywatchman.Fragment.PlansFragment;
+import com.plexoc.mywatchman.Fragment.RaisedSOSFragment;
 import com.plexoc.mywatchman.Fragment.RoamingStaffIdentityFragment;
 import com.plexoc.mywatchman.R;
 import com.plexoc.mywatchman.Utils.Constants;
@@ -28,13 +29,17 @@ public class HomeActivity extends BaseActivity {
                     id = Integer.parseInt(Objects.requireNonNull(intent.getStringExtra("id")));
                     status = Integer.parseInt(Objects.requireNonNull(intent.getStringExtra("status")));
                     //  Log.e("status", intent.getStringExtra("status"));
-                }
-                if (status == 1) {
-                    Constants.isFromNotification = true;
-                    replaceFragment(new RoamingStaffIdentityFragment(id), RoamingStaffIdentityFragment.class.getName());
-                } else
+                    if (status == 1) {
+                        Constants.isFromNotification = true;
+                        replaceFragment(new RoamingStaffIdentityFragment(id), RoamingStaffIdentityFragment.class.getName());
+                    } else if (status == 0) {
+                        Constants.isFromNotification = true;
+                        replaceFragment(new RaisedSOSFragment(id), RoamingStaffIdentityFragment.class.getName());
+                    } else
+                        addFragment(new DashboardFragment());
+                }else {
                     addFragment(new DashboardFragment());
-
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

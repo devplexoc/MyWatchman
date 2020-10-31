@@ -58,6 +58,9 @@ public class RaisedSOSUser {
     @SerializedName("Longitude")
     public String Longitude;
 
+    @SerializedName("UserName")
+    public String UserName;
+
     @SerializedName("Rating")
     public float Rating;
 

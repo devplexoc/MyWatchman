@@ -37,6 +37,7 @@ import com.plexoc.mywatchman.Fragment.DashboardFragment;
 import com.plexoc.mywatchman.Fragment.EmergencyContactFragment;
 import com.plexoc.mywatchman.Fragment.NotificationFragment;
 import com.plexoc.mywatchman.Fragment.ProfileFragment;
+import com.plexoc.mywatchman.Fragment.RaisedSOSFragment;
 import com.plexoc.mywatchman.Fragment.SOSHistoryFragment;
 import com.plexoc.mywatchman.Fragment.StatisticsFragment;
 import com.plexoc.mywatchman.Model.User;
@@ -143,6 +144,7 @@ public class DrawerUtil {
                     break;
                 case "10":
                     replaceFragment(new SOSHistoryFragment(), null, activity);
+                    //replaceFragment(new RaisedSOSFragment(), null, activity);
                     drawer.closeDrawer();
                     break;
                 case "9":

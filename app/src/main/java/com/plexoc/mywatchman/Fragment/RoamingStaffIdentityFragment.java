@@ -309,6 +309,7 @@ public class RoamingStaffIdentityFragment extends BaseFragment implements OnMapR
                         if (response.body().Item.Longitude != null) {
                             destinationlong = Double.parseDouble(response.body().Item.Longitude);
                         }
+
                         if (response.body().Item.ResponderLat != null) {
                             originlat = Double.parseDouble(response.body().Item.ResponderLat);
                         }
