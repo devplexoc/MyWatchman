@@ -129,7 +129,7 @@ public class ForgotPasswordFragment extends BaseFragment {
                             textViewone.setVisibility(View.INVISIBLE);
                             textViewtwo.setVisibility(View.INVISIBLE);
                             textViewthree.setVisibility(View.INVISIBLE);
-                            edittext_forgotpassword_email.setFilters(new InputFilter[]{new InputFilter.LengthFilter(9)});
+                            edittext_forgotpassword_email.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
                             edittext_forgotpassword_email.setInputType(InputType.TYPE_CLASS_NUMBER);
                         } else {
                             textinput_countrycode.setVisibility(View.GONE);

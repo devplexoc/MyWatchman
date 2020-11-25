@@ -32,6 +32,7 @@ import com.plexoc.mywatchman.Adapter.TransctionHistoryAdpter;
 import com.plexoc.mywatchman.Model.Error;
 import com.plexoc.mywatchman.Model.ListResponse;
 import com.plexoc.mywatchman.Model.Plan;
+import com.plexoc.mywatchman.Model.PlanDetails;
 import com.plexoc.mywatchman.Model.PlanDurationDiscount;
 import com.plexoc.mywatchman.Model.TransactionHistory;
 import com.plexoc.mywatchman.Model.User;
@@ -61,6 +62,8 @@ public class BillingFragment extends BaseFragment {
     private Toolbar toolbar;
     private MaterialButton button_plan_cancel, button_plan_upgrade, button_save;
 
+    private PlanDetails planDetails;
+
     private List<TransactionHistory> transactionlist = new ArrayList<>();
     private RecyclerView recyclerViewTransctionHistory, recyclerview_plan;
     private TransctionHistoryAdpter transctionHistoryAdpter;
@@ -80,7 +83,7 @@ public class BillingFragment extends BaseFragment {
 
     private int planId, durationID;
 
-    private AppCompatTextView textview_plan, textview_nxt_trns_date, textview_plan_price, textview_address_count;
+    private AppCompatTextView textview_plan, textview_nxt_trns_date, textview_plan_price, textview_address_count,textview_plan_duration_count;
     private AppCompatImageView imagevieww_cancel;
 
     @Override
@@ -93,6 +96,7 @@ public class BillingFragment extends BaseFragment {
         recyclerViewTransctionHistory = view.findViewById(R.id.recyclerview_transction_history);
         button_plan_cancel = view.findViewById(R.id.button_plan_cancel);
         button_plan_upgrade = view.findViewById(R.id.button_plan_upgrade);
+        textview_plan_duration_count = view.findViewById(R.id.textview_plan_duration_count);
 
 
         textview_plan = view.findViewById(R.id.textview_plan);
@@ -125,9 +129,10 @@ public class BillingFragment extends BaseFragment {
         //getCustomerCurrentPlan();
 
         textview_plan.setText(user.PlanName);
-        textview_nxt_trns_date.setText(user.PlanEndDate);
+        textview_nxt_trns_date.setText(user.PlanExpiryDate);
         textview_plan_price.setText("$" + " " + String.valueOf(user.PlanPrice));
         textview_address_count.setText(String.valueOf(user.AddressCount));
+        textview_plan_duration_count.setText(String.valueOf(user.PlanDuration));
 
         button_plan_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -270,6 +275,9 @@ public class BillingFragment extends BaseFragment {
                         textview_plan_amount = view.findViewById(R.id.textview_plan_amount);
                         imagevieww_cancel = view.findViewById(R.id.imagevieww_cancel);
 
+                        textview_planname.setText(user.PlanName + " " + "PLAN");
+                        planId = user.PlanId;
+
                         imagevieww_cancel.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -290,7 +298,7 @@ public class BillingFragment extends BaseFragment {
 
                                 durationID = planDurationDiscountList.get(position).Id;
 
-                              /*  if (durationID == 3) {
+                                /*if (durationID == 3) {
                                     planMonth = 1;
                                 }
                                 if (durationID == 2) {
@@ -314,6 +322,7 @@ public class BillingFragment extends BaseFragment {
                         button_save.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                GetPlanDetails();
                                 dialog.cancel();
                             }
                         });
@@ -390,6 +399,39 @@ public class BillingFragment extends BaseFragment {
             public void onFailure(Call<ListResponse<PlanDurationDiscount>> call, Throwable t) {
                 showMessage(Constants.DefaultErrorMessage);
                 LoadingDialog.cancelLoading();
+            }
+        });
+    }
+
+    private void GetPlanDetails(){
+        if (!isNetworkConnected()) {
+            Toast.makeText(getContext(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        LoadingDialog.showLoadingDialog(getContext());
+        getApiClient().getPlanDetails(planId,durationID).enqueue(new Callback<com.plexoc.mywatchman.Model.Response<PlanDetails>>() {
+            @Override
+            public void onResponse(Call<com.plexoc.mywatchman.Model.Response<PlanDetails>> call, Response<com.plexoc.mywatchman.Model.Response<PlanDetails>> response) {
+                if (response.code() == Constants.SuccessCode) {
+                    if (response.body().Item != null) {
+                        planDetails = response.body().Item;
+                        replaceFragment(new PaymentFragment(user,planDetails), null);
+                    } else {
+                        showMessage(response.body().Message);
+                    }
+                } else if (response.code() == Constants.InternalServerError) {
+                    showMessage(Constants.DefaultErrorMessage);
+                } else {
+                    showMessage(Constants.DefaultErrorMessage);
+                }
+                LoadingDialog.cancelLoading();
+            }
+
+            @Override
+            public void onFailure(Call<com.plexoc.mywatchman.Model.Response<PlanDetails>> call, Throwable t) {
+                LoadingDialog.cancelLoading();
+                Log.e("Plan details not found", t.getLocalizedMessage());
+                showMessage(Constants.DefaultErrorMessage);
             }
         });
     }

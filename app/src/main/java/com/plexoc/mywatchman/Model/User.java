@@ -104,6 +104,9 @@ public class User {
     @SerializedName("ProfilePicture")
     public String ProfilePicture;
 
+    @SerializedName("PlanExpiryDate")
+    public String PlanExpiryDate;
+
     @SerializedName("SecurityQuestionId")
     public int SecurityQuestionId;
 

@@ -34,6 +34,7 @@ import com.plexoc.mywatchman.Activity.PaymentActivity;
 import com.plexoc.mywatchman.Adapter.PlansAdpter;
 import com.plexoc.mywatchman.Model.ListResponse;
 import com.plexoc.mywatchman.Model.Plan;
+import com.plexoc.mywatchman.Model.PlanDetails;
 import com.plexoc.mywatchman.Model.PlanDurationDiscount;
 import com.plexoc.mywatchman.Model.TransactionHistory;
 import com.plexoc.mywatchman.Model.User;
@@ -55,6 +56,7 @@ import retrofit2.Response;
 public class PlansFragment extends BaseFragment {
 
     private User user;
+    private PlanDetails planDetails;
 
     public PlansFragment(User user) {
         this.user = user;
@@ -88,6 +90,8 @@ public class PlansFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_plans, container, false);
+
+        planDetails = new PlanDetails();
 
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.setTitle("Select Plan");
@@ -169,6 +173,7 @@ public class PlansFragment extends BaseFragment {
                             public void onClick(View v) {
                                 dialog.cancel();
                                 PlanInsert();
+                                GetPlanDetails();
                             }
                         });
 
@@ -281,10 +286,10 @@ public class PlansFragment extends BaseFragment {
             public void onResponse(Call<com.plexoc.mywatchman.Model.Response<TransactionHistory>> call, Response<com.plexoc.mywatchman.Model.Response<TransactionHistory>> response) {
                 if (response.code() == Constants.SuccessCode) {
                     if (response.body().Item != null) {
-                        Prefs.putString(Prefs.USER, new Gson().toJson(user));
-                        user = new Gson().fromJson(Prefs.getString(Prefs.USER), User.class);
+                       /* Prefs.putString(Prefs.USER, new Gson().toJson(user));
+                        user = new Gson().fromJson(Prefs.getString(Prefs.USER), User.class);*/
                         //replaceFragment(new PaymentSuccessfullFragment(), null);
-                        replaceFragment(new PaymentFragment(), null);
+                        //replaceFragment(new PaymentFragment(), null);
                         //startActivity(new Intent(getContext(), PaymentActivity.class));
                     } else {
                         showMessage(response.body().Message);
@@ -301,6 +306,39 @@ public class PlansFragment extends BaseFragment {
             public void onFailure(Call<com.plexoc.mywatchman.Model.Response<TransactionHistory>> call, Throwable t) {
                 LoadingDialog.cancelLoading();
                 Log.e("Plan Not Added : ", t.getLocalizedMessage());
+                showMessage(Constants.DefaultErrorMessage);
+            }
+        });
+    }
+
+    private void GetPlanDetails(){
+        if (!isNetworkConnected()) {
+            Toast.makeText(getContext(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        LoadingDialog.showLoadingDialog(getContext());
+        getApiClient().getPlanDetails(planId,durationID).enqueue(new Callback<com.plexoc.mywatchman.Model.Response<PlanDetails>>() {
+            @Override
+            public void onResponse(Call<com.plexoc.mywatchman.Model.Response<PlanDetails>> call, Response<com.plexoc.mywatchman.Model.Response<PlanDetails>> response) {
+                if (response.code() == Constants.SuccessCode) {
+                    if (response.body().Item != null) {
+                        planDetails = response.body().Item;
+                        replaceFragment(new PaymentFragment(user,planDetails), null);
+                    } else {
+                        showMessage(response.body().Message);
+                    }
+                } else if (response.code() == Constants.InternalServerError) {
+                    showMessage(Constants.DefaultErrorMessage);
+                } else {
+                    showMessage(Constants.DefaultErrorMessage);
+                }
+                LoadingDialog.cancelLoading();
+            }
+
+            @Override
+            public void onFailure(Call<com.plexoc.mywatchman.Model.Response<PlanDetails>> call, Throwable t) {
+                LoadingDialog.cancelLoading();
+                Log.e("Plan details not found", t.getLocalizedMessage());
                 showMessage(Constants.DefaultErrorMessage);
             }
         });

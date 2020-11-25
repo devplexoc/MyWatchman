@@ -288,7 +288,7 @@ public class LoginFragment extends BaseFragment {
                             startActivity(intent);
                             getActivity().finish();
                         } else {
-                            if (response.body().Item.PlanId == 0) {
+                            if (response.body().Code == 410) {
                                 replaceFragment(new PlansFragment(response.body().Item), null);
                             } else {
                                 Prefs.putString(Prefs.USER, new Gson().toJson(response.body().Item));

@@ -7,6 +7,7 @@ import com.plexoc.mywatchman.Model.EmergencyContact;
 import com.plexoc.mywatchman.Model.ListResponse;
 import com.plexoc.mywatchman.Model.Notifiaction;
 import com.plexoc.mywatchman.Model.Plan;
+import com.plexoc.mywatchman.Model.PlanDetails;
 import com.plexoc.mywatchman.Model.PlanDurationDiscount;
 import com.plexoc.mywatchman.Model.QuestionAnswer;
 import com.plexoc.mywatchman.Model.RaisedSOSUser;
@@ -14,6 +15,7 @@ import com.plexoc.mywatchman.Model.Rating;
 import com.plexoc.mywatchman.Model.Response;
 import com.plexoc.mywatchman.Model.SecurityQuestion;
 import com.plexoc.mywatchman.Model.SosType;
+import com.plexoc.mywatchman.Model.TransactionDetails;
 import com.plexoc.mywatchman.Model.TransactionHistory;
 import com.plexoc.mywatchman.Model.User;
 
@@ -78,8 +80,17 @@ public interface ApiClient {
     @POST("plan/SOSUpsert")
     Call<Response<RaisedSOSUser>> RaisedSOSinsert(@Body RaisedSOSUser raisedSOSUser);
 
+    @FormUrlEncoded
+    @POST("plan/TransactionDetailsUpsert")
+    Call<Response<TransactionDetails>> TransactionDetailsUpsert(@Field("CustomerId") int CustomerId,@Field("PlanId") int PlanId,@Field("CardNumber") String CardNumber,
+                                                                @Field("CardCvv") String CardCvv,@Field("CardMonthYear") String CardMonthYear,@Field("Price") String Price,
+                                                                @Field("TransitionDate") String TransitionDate,@Field("ExpiryDate") String ExpiryDate);
+
     @POST("plan/TransactionVSPlan")
     Call<Response<TransactionHistory>> PlanInsert(@Query("CustomerId") int CustomerId, @Query("PlanId") int PlanId, @Query("SettingId") int SettingId);
+
+    @GET("plan/GetPlanDetails")
+    Call<Response<PlanDetails>> getPlanDetails(@Query("PlanId") int PlanId,@Query("SettingId") int SettingId);
 
     @GET("customer/GetCustomerById/{customerId}")
     Call<Response<User>> getCustomerByid(@Path("customerId") int customerId);

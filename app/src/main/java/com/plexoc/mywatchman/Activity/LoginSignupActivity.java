@@ -10,6 +10,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.VideoView;
 
+import com.plexoc.mywatchman.Fragment.PaymentFragment;
+import com.plexoc.mywatchman.Fragment.PaymentSuccessfullFragment;
 import com.plexoc.mywatchman.Fragment.PlansFragment;
 import com.plexoc.mywatchman.Fragment.SplashLoginFragment;
 import com.plexoc.mywatchman.R;
@@ -28,7 +30,7 @@ public class LoginSignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login_signup);
 
         addFragment(new SplashLoginFragment());
-
+        //addFragment(new PaymentFragment(null,null));
 
       /*  videoView = findViewById(R.id.videoview);
 
@@ -57,7 +59,6 @@ public class LoginSignupActivity extends AppCompatActivity {
         transaction.replace(R.id.container, fragment);
         transaction.addToBackStack(fragmentTag == null ? fragment.getClass().getName() : fragmentTag);
         transaction.commitAllowingStateLoss();
-
     }
 
     public void addFragment(Fragment fragment) {
@@ -70,6 +71,10 @@ public class LoginSignupActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof PlansFragment) {
+            finish();
+        }else if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof PaymentFragment) {
+            finish();
+        }else if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof PaymentSuccessfullFragment) {
             finish();
         } else {
             super.onBackPressed();
