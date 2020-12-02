@@ -32,10 +32,12 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
 import com.plexoc.mywatchman.Activity.PaymentActivity;
 import com.plexoc.mywatchman.Adapter.PlansAdpter;
+import com.plexoc.mywatchman.Model.Error;
 import com.plexoc.mywatchman.Model.ListResponse;
 import com.plexoc.mywatchman.Model.Plan;
 import com.plexoc.mywatchman.Model.PlanDetails;
 import com.plexoc.mywatchman.Model.PlanDurationDiscount;
+import com.plexoc.mywatchman.Model.TransactionDetails;
 import com.plexoc.mywatchman.Model.TransactionHistory;
 import com.plexoc.mywatchman.Model.User;
 import com.plexoc.mywatchman.R;
@@ -43,6 +45,7 @@ import com.plexoc.mywatchman.Utils.Constants;
 import com.plexoc.mywatchman.Utils.LoadingDialog;
 import com.plexoc.mywatchman.Utils.Prefs;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +74,7 @@ public class PlansFragment extends BaseFragment {
     RadioGroup radiogroup;
     RadioButton radioButtonMobileWallete, radioButtonVisa;
     AppCompatCheckBox checkbox_tns;
+    boolean isFreePlan;
 
     private ArrayList<String> arrayListSpinner = new ArrayList<>();
     private List<PlanDurationDiscount> planDurationDiscountList = new ArrayList<>();
@@ -160,13 +164,23 @@ public class PlansFragment extends BaseFragment {
                             spinner_selectplanduration.setVisibility(View.GONE);
                             textview_plan_amount.setText("0");
                             textview_multiplication.setVisibility(View.GONE);
-                            textview_chooseoption.setVisibility(View.GONE);
-                            radiogroup.setVisibility(View.GONE);
-                            button_paysecurely.setText("Submit");
                         } else {
                             spinner_selectplanduration.setVisibility(View.VISIBLE);
                         }
 
+                        if(planPrice > 0){
+                            isFreePlan = false;
+                            spinner_selectplanduration.setEnabled(true);
+
+                        }else {
+                            isFreePlan = true;
+                            spinner_selectplanduration.setSelection(0);
+                            textview_chooseoption.setVisibility(View.GONE);
+                            spinner_selectplanduration.setEnabled(false);
+                            radiogroup.setVisibility(View.GONE);
+                            button_paysecurely.setText("Submit");
+                            durationID = 3;
+                        }
 
                         button_paysecurely.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -323,7 +337,12 @@ public class PlansFragment extends BaseFragment {
                 if (response.code() == Constants.SuccessCode) {
                     if (response.body().Item != null) {
                         planDetails = response.body().Item;
-                        replaceFragment(new PaymentFragment(user,planDetails), null);
+                        if(isFreePlan){
+                            TransactionDetails();
+                        }else {
+                            replaceFragment(new PaymentFragment(user,planDetails), null);
+                        }
+
                     } else {
                         showMessage(response.body().Message);
                     }
@@ -382,4 +401,48 @@ public class PlansFragment extends BaseFragment {
         });
     }
 
+
+    private void TransactionDetails() {
+        if (!isNetworkConnected()) {
+            Toast.makeText(getContext(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        LoadingDialog.showLoadingDialog(getContext());
+        getApiClient().TransactionDetailsUpsert(user.Id,planDetails.Id,null,
+                null,null,planDetails.Price,
+                planDetails.TransitionDate,planDetails.ExpiryDate).enqueue(new Callback<com.plexoc.mywatchman.Model.Response<TransactionDetails>>() {
+            @Override
+            public void onResponse(Call<com.plexoc.mywatchman.Model.Response<TransactionDetails>> call, retrofit2.Response<com.plexoc.mywatchman.Model.Response<TransactionDetails>> response) {
+                if (response.code() == Constants.SuccessCode) {
+                    if (response.body().Item != null) {
+
+                        Prefs.putString(Prefs.USER, new Gson().toJson(user));
+                        user = new Gson().fromJson(Prefs.getString(Prefs.USER), User.class);
+
+                        replaceFragment(new PaymentSuccessfullFragment(),null);
+
+                    } else {
+                        showMessage(response.body().Message);
+                    }
+                } else if (response.code() == Constants.InternalServerError) {
+                    showMessage(Constants.DefaultErrorMessage);
+                } else {
+                    try {
+                        Error error = new Gson().fromJson(response.errorBody().string(), Error.class);
+                        showMessage(error.Message);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                LoadingDialog.cancelLoading();
+            }
+
+            @Override
+            public void onFailure(Call<com.plexoc.mywatchman.Model.Response<TransactionDetails>> call, Throwable t) {
+                LoadingDialog.cancelLoading();
+                Log.e("Address Not Added : ", t.getLocalizedMessage());
+                showMessage(Constants.DefaultErrorMessage);
+            }
+        });
+    }
 }
