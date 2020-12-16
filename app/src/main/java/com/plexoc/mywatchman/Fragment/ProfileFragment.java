@@ -119,14 +119,13 @@ public class ProfileFragment extends BaseFragment {
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.setTitle("Profile");
         toolbar.setNavigationIcon(R.drawable.ic_menu);
-        DrawerUtil.getDrawer(getActivity(), toolbar, user);
 
+        DrawerUtil.getDrawer(getActivity(), toolbar, user);
 
         button_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (doValidate()) {
-
                     user.FirstName = edittext_profile_firstname.getText().toString().trim();
                     user.LastName = edittext_lastname.getText().toString().trim();
                     user.UserName = edittext_username.getText().toString().trim();
@@ -141,7 +140,6 @@ public class ProfileFragment extends BaseFragment {
                 }
             }
         });
-
 
         imageView_profile_image.setOnClickListener(view1 -> {
             ImagePicker.create(ProfileFragment.this).returnMode(ReturnMode.ALL)

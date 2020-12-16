@@ -34,7 +34,7 @@ public class HomeActivity extends BaseActivity {
                         replaceFragment(new RoamingStaffIdentityFragment(id), RoamingStaffIdentityFragment.class.getName());
                     } else if (status == 0) {
                         Constants.isFromNotification = true;
-                        replaceFragment(new RaisedSOSFragment(id), RoamingStaffIdentityFragment.class.getName());
+                        replaceFragment(new RaisedSOSFragment(id), RaisedSOSFragment.class.getName());
                     } else
                         addFragment(new DashboardFragment());
                 }else {

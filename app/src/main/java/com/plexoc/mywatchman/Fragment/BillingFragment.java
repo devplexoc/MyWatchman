@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -144,9 +145,7 @@ public class BillingFragment extends BaseFragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 CallCancelPlanApi();
-                                Intent intent = new Intent(getContext(), LoginSignupActivity.class);
-                                getActivity().startActivity(intent);
-                                getActivity().finish();
+
                             }
                         })
                         .setNegativeButton("No", null)
@@ -220,12 +219,12 @@ public class BillingFragment extends BaseFragment {
                 if (response.body().Code == Constants.SuccessCode) {
                     if (response.body().Item != null) {
 
-                        user.Id = user.CustomerId;
-
-                        Prefs.putString(Prefs.USER, new Gson().toJson(response.body().Item));
-                        user = new Gson().fromJson(Prefs.getString(Prefs.USER), User.class);
+                        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().clear().apply();
 
                         Toast.makeText(getContext(), "Plan Cancel Successfully", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getContext(), LoginSignupActivity.class);
+                        getActivity().startActivity(intent);
+                        getActivity().finish();
 
                     } else {
                         showMessage(response.body().Message);

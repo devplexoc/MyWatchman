@@ -83,7 +83,11 @@ public class NotificationFragment extends BaseFragment {
             public void onResponse(Call<ListResponse<Notifiaction>> call, Response<ListResponse<Notifiaction>> response) {
                 if (response.code() == Constants.SuccessCode) {
                     if (!response.body().Values.isEmpty()) {
-                        notificationAdapter = new NotificationAdapter(getContext(), response.body().Values);
+                        notificationAdapter = new NotificationAdapter(getContext(), response.body().Values, id -> {
+                            if (id != 0) {
+                                replaceFragment(new RaisedSOSFragment(id), RaisedSOSFragment.class.getName());
+                            }
+                        });
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
                         recyclerview_notification.setLayoutManager(layoutManager);
                         recyclerview_notification.setItemAnimator(new DefaultItemAnimator());

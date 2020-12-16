@@ -25,5 +25,8 @@ public class Notifiaction {
     @SerializedName("ReadDateTime")
     public String ReadDateTime;
 
+    @SerializedName("SOSId")
+    public int SOSId;
+
 
 }

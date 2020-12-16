@@ -19,6 +19,7 @@
         android:id="@+id/recyclerview_plans"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        tools:listitem="@layout/item_plan_list_layout"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/checkbox_tns"
         app:layout_constraintEnd_toEndOf="parent"

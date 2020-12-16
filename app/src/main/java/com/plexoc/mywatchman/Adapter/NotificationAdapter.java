@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.google.android.material.card.MaterialCardView;
 import com.plexoc.mywatchman.Model.Notifiaction;
 import com.plexoc.mywatchman.R;
 
@@ -20,10 +21,16 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     private Context context;
     private List<Notifiaction> notifiactionList;
+    private NotificationCallback notificationCallback;
 
-    public NotificationAdapter(Context context, List<Notifiaction> notifiactionList) {
+    public NotificationAdapter(Context context, List<Notifiaction> notifiactionList, NotificationCallback notificationCallback) {
         this.context = context;
         this.notifiactionList = notifiactionList;
+        this.notificationCallback = notificationCallback;
+    }
+
+    public interface NotificationCallback {
+        void getSosId(int id);
     }
 
     @NonNull
@@ -42,11 +49,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         holder.textview_createddate.setText(notifiactionList.get(position).CreatedDate);
 
-        if(notifiactionList.get(position).ReadDateTime != null){
-            holder.textview_notification.setTypeface(Typeface.create("work_sans",Typeface.NORMAL));
-        }else {
-            holder.textview_notification.setTypeface(Typeface.create("work_sans_bold",Typeface.BOLD));
+        if (notifiactionList.get(position).ReadDateTime != null) {
+            holder.textview_notification.setTypeface(Typeface.create("work_sans", Typeface.NORMAL));
+        } else {
+            holder.textview_notification.setTypeface(Typeface.create("work_sans_bold", Typeface.BOLD));
         }
+        holder.materialCardView.setOnClickListener(v -> {
+            notificationCallback.getSosId(notifiactionList.get(position).SOSId);
+        });
     }
 
     @Override
@@ -56,13 +66,15 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        AppCompatTextView textview_notification,textview_createddate;
+        AppCompatTextView textview_notification, textview_createddate;
+        MaterialCardView materialCardView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             textview_notification = itemView.findViewById(R.id.textview_notification);
             textview_createddate = itemView.findViewById(R.id.textview_createddate);
+            materialCardView = itemView.findViewById(R.id.cardView_Notifiication);
 
         }
     }
