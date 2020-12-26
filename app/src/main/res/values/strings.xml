@@ -6,6 +6,9 @@
     <string name="string">Lorem ipsum dolor sit amet,consectetur adipisicing elit. Doloribus, saepe, soluta.</string>
     <string name="address">A-101, Himani Complex, near Ahmedabad 15 restaruant, Vastarpur,Ahmedabad,380052.</string>
     <string name="location_permission_msg">Location Permission is required.Please grant permission from setting.</string>
+    <string name="updatetext">A new version of My Watchman is available. Please update to latest version.</string>
+    <string name="updateavailable">Update Available</string>
+
 
     <string-array name="planduration">
         <item>1 Month</item>

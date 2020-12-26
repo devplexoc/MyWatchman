@@ -497,10 +497,10 @@ public class DashboardFragment extends BaseFragment {
         questionModel = new QuestionModel(3, "How would you rate the quality of our SOS services?", false, optionsModelListthree, true, true, false);
         questionModelList.add(questionModel);
 
-        questionModel = new QuestionModel(4, "Overall, how satisfied are you with the services you received from our SOS by Watchman?", false, optionsModelListfour, true, true, false);
+        questionModel = new QuestionModel(4, "Overall, how satisfied are you with the services you received from My Watchman?", false, optionsModelListfour, true, true, false);
         questionModelList.add(questionModel);
 
-        questionModel = new QuestionModel(5, "Would you recommend SOS by Watchman to others?", false, optionsModelListfive, true, true, false);
+        questionModel = new QuestionModel(5, "Would you recommend My Watchman to others?", false, optionsModelListfive, true, true, false);
         questionModelList.add(questionModel);
 
         questionModel = new QuestionModel(6, "Any other necessary information?", true, null, false, false, false);
@@ -588,6 +588,9 @@ public class DashboardFragment extends BaseFragment {
         optionsModelListfive.add(optionsModel);
 
         optionsModel = new OptionsModel(2, "No", false, 0, true);
+        optionsModelListfive.add(optionsModel);
+
+        optionsModel = new OptionsModel(3, "Maybe", false, 0, true);
         optionsModelListfive.add(optionsModel);
     }
 
