@@ -138,6 +138,14 @@ public class NewPasswordFragment extends BaseFragment {
             flg = true;
         }
 
+        if (edittext_new_password.getText().toString().trim().length() < 6) {
+            textinput_new_password.setError("Password must be of at least 6 characters");
+            flg = false;
+        } else {
+            edittext_new_password.clearFocus();
+            flg = true;
+        }
+
         if (edittext_confirmpasword.getText().toString().isEmpty()) {
             textinput_confirmpasword.setError("Please Confirm Password");
             flg = false;

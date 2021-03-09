@@ -53,9 +53,9 @@ public class SignupFragment extends BaseFragment {
     private AppCompatSpinner spinner_countrycode;
 
     private TextInputLayout textinput_firstname, textinput_lastname, textinput_email, textinput_mobilenumber,
-            textinput_password, textinput_username,textinput_countrycode;
+            textinput_password, textinput_username, textinput_countrycode;
     private TextInputEditText edittext_firstname, edittext_lastname, edittext_email, edittext_mobilenumber,
-            edittext_password, edittext_username,edittext_countrycode;
+            edittext_password, edittext_username, edittext_countrycode;
     private MaterialButton button_signup;
     private String CountryItem;
 
@@ -213,8 +213,8 @@ public class SignupFragment extends BaseFragment {
                     closeKeybord();
                     if (response.body().Code == 200) {
                         user.Otp = response.body().Item.Otp;
-                       // Toast.makeText(getContext(), "Your OTP is : " + user.Otp, Toast.LENGTH_LONG).show();
-                        replaceFragment(new OTPConfirmFragment(user,false), null);
+                        // Toast.makeText(getContext(), "Your OTP is : " + user.Otp, Toast.LENGTH_LONG).show();
+                        replaceFragment(new OTPConfirmFragment(user, false), null);
                     } else {
                         showMessage(response.body().Message);
                     }
@@ -276,14 +276,22 @@ public class SignupFragment extends BaseFragment {
             textinput_password.setErrorEnabled(false);
         }
 
-        if (!isValidPassword(edittext_password.getText().toString().trim())) {
+        if (edittext_password.getText().toString().trim().length() < 6) {
+            textinput_password.setError("Password must be of at least 6 characters");
+            edittext_password.requestFocus();
+        }else {
+            edittext_password.clearFocus();
+            textinput_password.setErrorEnabled(false);
+        }
+
+        /*if (!isValidPassword(edittext_password.getText().toString().trim())) {
             textinput_password.setError("password must be of minimum 8 characters and must include a capital letter , a special charcter and a digit");
             edittext_password.requestFocus();
             return false;
-        }else {
+        } else {
             textinput_password.setErrorEnabled(false);
             edittext_password.clearFocus();
-        }
+        }*/
 
 
         if (edittext_mobilenumber.getText().toString().trim().isEmpty()) {

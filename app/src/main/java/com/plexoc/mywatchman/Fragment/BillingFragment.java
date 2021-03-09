@@ -4,6 +4,7 @@ package com.plexoc.mywatchman.Fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatImageView;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
+import com.plexoc.mywatchman.Activity.HomeActivity;
 import com.plexoc.mywatchman.Activity.LoginSignupActivity;
 import com.plexoc.mywatchman.Adapter.PlansAdpter;
 import com.plexoc.mywatchman.Adapter.TransctionHistoryAdpter;
@@ -159,7 +161,15 @@ public class BillingFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(getContext(), "Plan Upgrade Successfully", Toast.LENGTH_SHORT).show();
-                getAllPlan();
+
+                String url = "https://payment.my-watchman.com/payment.aspx?mobile="+user.Mobile;
+                //Log.e("url",url);
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+
+                //getAllPlan();
             }
         });
 

@@ -1,5 +1,6 @@
 package com.plexoc.mywatchman.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatSpinner;
@@ -18,6 +19,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.plexoc.mywatchman.Activity.HomeActivity;
 import com.plexoc.mywatchman.Model.Error;
 import com.plexoc.mywatchman.Model.ListResponse;
 import com.plexoc.mywatchman.Model.SecurityQuestion;
@@ -25,6 +27,7 @@ import com.plexoc.mywatchman.Model.User;
 import com.plexoc.mywatchman.R;
 import com.plexoc.mywatchman.Utils.Constants;
 import com.plexoc.mywatchman.Utils.LoadingDialog;
+import com.plexoc.mywatchman.Utils.Prefs;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -173,12 +176,15 @@ public class SecurityQuestionFragment extends BaseFragment {
 
                         closeKeybord();
 
-                        replaceFragment(new PlansFragment(response.body().Item), null);
+                        //replaceFragment(new PlansFragment(response.body().Item), null);
 
-                        //replaceFragment(new OTPConfirmFragment(response.body().Item),null);
+                        Prefs.putString(Prefs.USER, new Gson().toJson(response.body().Item));
+                        user = new Gson().fromJson(Prefs.getString(Prefs.USER), User.class);
 
-                        /*Intent intent = new Intent(getActivity(), HomeActivity.class);
-                        startActivity(intent);*/
+                        Intent intent = new Intent(getContext(), HomeActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+
                     } else {
                         showMessage(response.body().Message);
                     }
